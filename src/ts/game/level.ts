@@ -1,13 +1,22 @@
 import { Point, SCREEN_HEIGHT } from "./constants";
+import { Entity } from "./entity/entity";
+import { Player } from "./entity/player";
 
 export const TILE_AIR = 0;
 export const TILE_GROUND = 1;
 
 export class Level {
+
+    player: Player;
+    entities: Entity[];
+
     constructor() {
     }
 
     update() {
+        for (const entity of this.entities) {
+            entity.update();
+        }
     }
 
     render(context: CanvasRenderingContext2D) {
@@ -17,6 +26,10 @@ export class Level {
         context.fillStyle = 'white';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.restore();
+
+        for (const entity of this.entities) {
+            entity.render(context);
+        }
     }
 
     coordIsTouching(pos: Point, type: number): boolean {

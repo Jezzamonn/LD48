@@ -6,8 +6,10 @@
   "scripts": {
     "watch": "npm-watch",
     "reload": "reload -b -d build/client",
-    "static": "mkdir -p build/client/ && rsync -a --delete --exclude js/ src/static/ build/client/",
+    "static": "mkdir -p build/client/ && rsync -a --delete --exclude js/ --exclude css/ src/static/ build/client/",
+    "sass": "mkdir -p build/client/css && sass src/scss/styles.scss build/client/css/styles.css",
     "webpack": "webpack",
+    "build": "npm-run-all --parallel webpack sass static",
     "clean": "rm -rf build/*"
   },
   "watch": {
@@ -16,6 +18,12 @@
         "src/static/**"
       ],
       "extensions": "html,css"
+    },
+    "sass": {
+      "patterns": [
+        "src/css/**"
+      ],
+      "extensions": "scss"
     },
     "webpack": {
       "patterns": [
@@ -33,8 +41,10 @@
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
     "babel-loader": "^8.2.2",
+    "npm-run-all": "^4.1.5",
     "npm-watch": "^0.9.0",
     "reload": "^3.1.1",
+    "sass": "^1.32.11",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0"
   },
