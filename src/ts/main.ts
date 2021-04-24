@@ -14,13 +14,13 @@ let timeStep = 1 / 60;
 let subGame: SubGame;
 
 function init() {
-    canvas = document.querySelector('.canvas');
+    canvas = document.querySelector('.canvas')!;
     canvas.width = PX_SCREEN_WIDTH;
     canvas.height = PX_SCREEN_HEIGHT;
     canvas.style.width = (PIXEL_SCALE * PX_SCREEN_WIDTH) + 'px';
     canvas.style.height = (PIXEL_SCALE * PX_SCREEN_HEIGHT) + 'px';
 
-    context = canvas.getContext('2d');
+    context = canvas.getContext('2d')!;
 
     Keys.setUp();
 

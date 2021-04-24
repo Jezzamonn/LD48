@@ -1,11 +1,10 @@
-import { number } from "yargs";
-import { toPx, toRoundedPx } from "../constants";
-import { Level, TILE_GROUND } from "../level";
+import { Dir, Point, toPx, toRoundedPx } from "../constants";
+import { Level, Tile } from "../level";
 
 export class Entity {
 
     // Up ref to the level
-    level: Level;
+    level!: Level;
 
     x: number = 0;
     y: number = 0;
@@ -32,6 +31,16 @@ export class Entity {
 
         // TODO: Horizontal collision
         if (this.canColide) {
+            if (this.dx < 0) {
+                if (this.isTouching(Tile.GROUND, {dir: Dir.LEFT})) {
+                    this.onLeftCollision();
+                }
+            }
+            if (this.dx > 0) {
+                if (this.isTouching(Tile.GROUND, {dir: Dir.RIGHT})) {
+                    this.onRightCollision();
+                }
+            }
         }
     }
 
@@ -39,15 +48,44 @@ export class Entity {
         this.y += this.dy * dt;
         this.y = Math.round(this.y);
 
-        // TODO: Upward collision
         if (this.canColide) {
-            if (this.level.coordIsTouching({x: this.minX, y: this.maxY}, TILE_GROUND) ||
-                this.level.coordIsTouching({x: this.maxX, y: this.maxY}, TILE_GROUND)) {
-
-                const resetPos = this.level.getTilePosFromCoord({x: this.midX, y: this.maxY}, {x: 0, y: 0});
-                this.maxY = resetPos.y;
+            if (this.dy < 0) {
+                if (this.isTouching(Tile.GROUND, {dir: Dir.UP})) {
+                    this.onUpCollision();
+                }
+            }
+            if (this.dy > 0) {
+                if (this.isTouching(Tile.GROUND, {dir: Dir.DOWN})) {
+                    this.onDownCollision();
+                }
             }
         }
+    }
+
+    // Functions that can also be edited by subclasses
+    onUpCollision() {
+        const resetPos = this.level.getTilePosFromCoord({y: this.minY}, {y: 1});
+        this.minY = resetPos.y + 1;
+
+        this.dy = 0;
+    }
+    onDownCollision() {
+        const resetPos = this.level.getTilePosFromCoord({y: this.maxY}, {y: 0});
+        this.maxY = resetPos.y - 1;
+
+        this.dy = 0;
+    }
+    onLeftCollision() {
+        const resetPos = this.level.getTilePosFromCoord({x: this.minX}, {x: 0});
+        this.minX = resetPos.x + 1;
+
+        this.dx = 0;
+    }
+    onRightCollision() {
+        const resetPos = this.level.getTilePosFromCoord({x: this.maxX}, {x: 1});
+        this.maxX = resetPos.x - 1;
+
+        this.dx = 0;
     }
 
     render(context: CanvasRenderingContext2D) {
@@ -56,7 +94,67 @@ export class Entity {
         context.fillRect(toRoundedPx(this.minX), toRoundedPx(this.minY), toRoundedPx(this.w), toRoundedPx(this.h));
     }
 
-    // Getters and setter and junk.
+    isStandingOnGround() {
+        return this.isTouching(Tile.GROUND, {dir: Dir.DOWN, offset: {x: 0, y: 1}});
+    }
+
+    isTouching(tile: Tile, {dir, offset = {x: 0, y: 0}}: {dir?: Dir, offset?: Point}={}) {
+        let coords: Point[];
+        switch (dir) {
+            case Dir.LEFT:
+                coords = [
+                    {x: this.minX, y: this.minY},
+                    {x: this.minX, y: this.maxY},
+                ];
+                break;
+            case Dir.RIGHT:
+                coords = [
+                    {x: this.maxX, y: this.minY},
+                    {x: this.maxX, y: this.maxY},
+                ];
+                break;
+            case Dir.UP:
+                coords = [
+                    {x: this.minX, y: this.minY},
+                    {x: this.maxX, y: this.minY},
+                ];
+                break;
+            case Dir.DOWN:
+                coords = [
+                    {x: this.minX, y: this.maxY},
+                    {x: this.maxX, y: this.maxY},
+                ];
+                break;
+            default:
+                coords = [
+                    {x: this.minX, y: this.minY},
+                    {x: this.maxX, y: this.minY},
+                    {x: this.minX, y: this.maxY},
+                    {x: this.maxX, y: this.maxY},
+                ];
+        }
+        return coords
+            // Add the offset
+            .map(coord => {
+                coord.x += offset.x;
+                coord.y += offset.y;
+                return coord;
+            })
+            // check if any position is touching
+            .some(coord => this.level.coordIsTouching(coord, tile));
+    }
+
+    isOn(tile: Tile) {
+        const coords = [
+            {x: this.minX, y: this.minY},
+            {x: this.maxX, y: this.minY},
+            {x: this.minX, y: this.maxY},
+            {x: this.maxX, y: this.maxY},
+        ];
+        return coords.every(coord => this.level.coordIsTouching(coord, tile));
+    }
+
+    //#region Getters and setter and junk.
     get minX() {
         return this.x;
     }
@@ -104,4 +202,6 @@ export class Entity {
     set maxY(val: number) {
         this.y = val - this.w;
     }
+
+    //#endregion
 }

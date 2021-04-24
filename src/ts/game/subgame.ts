@@ -2,7 +2,7 @@ import { Level } from "./level";
 
 export class SubGame {
 
-    level: Level;
+    level!: Level;
 
     constructor() {}
 

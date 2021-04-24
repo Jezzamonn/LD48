@@ -3,8 +3,10 @@ import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx } from "./constants";
 import { Entity } from "./entity/entity";
 import { Player } from "./entity/player";
 
-export const TILE_AIR = 0;
-export const TILE_GROUND = 1;
+export enum Tile {
+    AIR,
+    GROUND,
+}
 
 export class Level {
 
@@ -50,12 +52,12 @@ export class Level {
         }
     }
 
-    coordIsTouching(pos: Point, type: number): boolean {
-        const pretendType = pos.y < SCREEN_HEIGHT ? TILE_AIR : TILE_GROUND;
+    coordIsTouching(pos: Point, type: Tile): boolean {
+        const pretendType = pos.y < SCREEN_HEIGHT ? Tile.AIR : Tile.GROUND;
         return pretendType == type;
     }
 
-    getTilePosFromCoord(coord: Point, tilePos: Point): Point {
+    getTilePosFromCoord(coord: {x?: number, y?: number}, tilePos: {x?: number, y?: number}): Point {
         // For the sec, just return the bottom?
         return {
             x: 0,
