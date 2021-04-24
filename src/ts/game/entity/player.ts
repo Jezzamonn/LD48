@@ -8,8 +8,6 @@ export class Player extends Entity {
 
     update(dt: number) {
         if (Keys.wasPressedThisFrame('ArrowUp')) {
-            console.log('PLayer jump');
-            
             this.dy = -jumpSpeed;
         }
 

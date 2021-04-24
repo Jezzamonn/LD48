@@ -6,12 +6,10 @@ class _Keys {
     setUp() {
         // Thought: Should this be adding to a number rather than triggering a boolean? Eh.
         document.addEventListener('keydown', (evt) => {
-            console.log(`keydown: ${evt.code}`);
             this.#pressedKeys.add(evt.key);
             this.#pressedThisFrame.add(evt.key);
         });
         document.addEventListener('keyup', (evt) => {
-            console.log(`keyup: ${evt.code}`);
             this.#pressedKeys.delete(evt.key);
             this.#releasedThisFrame.add(evt.key);
         });
