@@ -4,32 +4,15 @@ import { Level } from "./game/level";
 import { SubGame } from "./game/subgame";
 import { Keys } from "./keys";
 
-const PIXEL_SCALE = 2;
-
-let canvas: HTMLCanvasElement;
-let context: CanvasRenderingContext2D;
-
 let simulatedTimeMs: number;
 let timeStep = 1 / 60;
 
 let game: Game;
 
 function init() {
-    canvas = document.querySelector('.canvas')!;
-    canvas.width = PX_SCREEN_WIDTH;
-    canvas.height = PX_SCREEN_HEIGHT;
-    canvas.style.width = (PIXEL_SCALE * PX_SCREEN_WIDTH) + 'px';
-    canvas.style.height = (PIXEL_SCALE * PX_SCREEN_HEIGHT) + 'px';
-
-    context = canvas.getContext('2d')!;
-
     Keys.setUp();
 
-    const subGame = new SubGame();
-    subGame.level = new Level();
-
     game = new Game();
-    game.subGames.push(subGame);
 
     requestAnimationFrame(doAnimationFrame);
 }
@@ -64,7 +47,7 @@ function update() {
 }
 
 function render() {
-    game.render(context);
+    game.render();
 }
 
 

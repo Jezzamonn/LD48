@@ -4,6 +4,7 @@ import { DebugEntity } from "./entity/debug-entity";
 import { Entity } from "./entity/entity";
 import { Pickup } from "./entity/pickup";
 import { Player } from "./entity/player";
+import { SubGame } from "./subgame";
 
 export const TILE_SIZE = fromPx(16);
 
@@ -16,11 +17,14 @@ export enum Tile {
 
 export class Level {
 
+    subGame: SubGame;
     player: Player;
     entities: Entity[] = [];
     tiles: Tile[][] = [];
 
-    constructor() {
+    constructor(subGame: SubGame) {
+        this.subGame = subGame;
+
         // Some example set of tiles for the moment?
         for (let y = 0; y < 10; y++) {
             const tileRow: Tile[] = [];

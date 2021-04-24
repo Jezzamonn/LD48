@@ -6,6 +6,8 @@ export const PX_SCREEN_HEIGHT = 240;
 export const SCREEN_WIDTH = fromPx(PX_SCREEN_WIDTH);
 export const SCREEN_HEIGHT = fromPx(PX_SCREEN_HEIGHT);
 
+export const CANVAS_SCALE = 2;
+
 export enum Dir {
     LEFT = 0,
     UP,
