@@ -140,10 +140,8 @@ export class Level {
         if (tileCoord.x < 0 || tileCoord.x >= this.width || tileCoord.y < 0 || tileCoord.y >= this.height) {
             return Tile.GROUND;
         }
-        else {
-            // TODO: Look up from the thing properly
-            return Tile.AIR;
-        }
+
+        return this.tiles[tileCoord.y][tileCoord.x];
     }
 
     getTilePosFromCoord(coord: {x?: number, y?: number}, tilePos: {x?: number, y?: number}): number {
