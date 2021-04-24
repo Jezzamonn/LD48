@@ -21,7 +21,7 @@
     },
     "sass": {
       "patterns": [
-        "src/css/**"
+        "src/scss/**"
       ],
       "extensions": "scss"
     },
