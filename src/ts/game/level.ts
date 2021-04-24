@@ -46,6 +46,8 @@ export class Level {
             ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
             ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
             this.entities.push(ent);
+
+            ent.subGameIndex = this.subGame.index + 1;
         }
 
         this.player = new Player(this);

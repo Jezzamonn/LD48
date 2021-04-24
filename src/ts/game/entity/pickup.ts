@@ -3,6 +3,9 @@ import { Level } from "../level";
 import { Entity } from "./entity";
 
 export class Pickup extends Entity {
+
+    subGameIndex?: number;
+
     constructor(level: Level) {
         super(level);
 

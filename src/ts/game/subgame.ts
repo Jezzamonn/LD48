@@ -8,12 +8,14 @@ export class SubGame {
     canvas!: HTMLCanvasElement;
     context!: CanvasRenderingContext2D;
 
+    index: number;
     game: Game;
     level!: Level;
     camera: Camera = new Camera();
 
-    constructor(game: Game) {
+    constructor(game: Game, index: number) {
         this.game = game;
+        this.index = index;
 
         this.canvas = document.createElement('canvas');
         this.canvas.width = PX_SCREEN_WIDTH;

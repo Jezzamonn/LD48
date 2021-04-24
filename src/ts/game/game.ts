@@ -6,17 +6,43 @@ export class Game {
 
     allSubGames: SubGame[] = [];
 
-    subGames: SubGame[] = [];
     activeSubGameIndex = 0;
 
     constructor() {
-        const container = document.querySelector('.content')!;
-
         for (let i = 0; i < 5; i++) {
-            const subGame = new SubGame(this);
+            const subGame = new SubGame(this, i);
             subGame.level = new Level(subGame);
-            this.subGames.push(subGame);
+            this.allSubGames.push(subGame);
+        }
 
+        this.subGames.push(this.allSubGames[0]);
+
+        this.updateCanvases();
+    }
+
+    get subGameIndexes(): number[] {
+        const ret: number[] = [];
+
+        let curIndex: number | undefined = 0;
+        while (curIndex != null) {
+            ret.push(curIndex);
+
+            const subGame: SubGame = this.allSubGames[curIndex];
+            curIndex = subGame.level.player.pickup?.subGameIndex;
+        }
+        return ret;
+    }
+
+    get subGames() {
+        return this.subGameIndexes.map(ix => this.allSubGames[ix]);
+    }
+
+    updateCanvases() {
+        const container = document.querySelector('.content')!;
+        while (container.firstChild) {
+            container.removeChild(container.lastChild!);
+        }
+        for (const subGame of this.subGames) {
             container.append(subGame.canvas);
         }
     }

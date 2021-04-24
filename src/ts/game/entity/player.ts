@@ -70,9 +70,11 @@ export class Player extends Entity {
             if (this.isTouchingEntity(pickup)) {
                 pickup.removeFromLevel();
                 this.pickup = pickup;
+                this.level.subGame.game.updateCanvases();
                 return;
             }
         }
+
     }
 
     dropPickup() {
@@ -85,6 +87,8 @@ export class Player extends Entity {
         this.pickup.dy = -500;
         // Drop it
         this.pickup = undefined;
+
+        this.level.subGame.game.updateCanvases();
     }
 
     render(context: CanvasRenderingContext2D) {
