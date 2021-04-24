@@ -81,6 +81,8 @@ export class Level {
 
     render(context: CanvasRenderingContext2D) {
         // Just fill the canvas for the mo.
+        context.filter = `hue-rotate(${40 * this.subGame.index}deg)`
+
         context.save();
         context.resetTransform();
         context.fillStyle = '#f7f3cb';
