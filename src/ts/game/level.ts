@@ -127,16 +127,35 @@ export class Level {
         // No sky for the moment I guess?
     }
 
-    coordIsTouching(pos: Point, type: Tile): boolean {
-        const pretendType = pos.y < SCREEN_HEIGHT ? Tile.AIR : Tile.GROUND;
-        return pretendType == type;
+    coordIsTouching(coord: Point, type: Tile): boolean {
+        const tileValue = this.getTileFromCoord(coord);
+        return tileValue == type;
     }
 
-    getTilePosFromCoord(coord: {x?: number, y?: number}, tilePos: {x?: number, y?: number}): Point {
-        // For the sec, just return the bottom?
-        return {
-            x: 0,
-            y: SCREEN_HEIGHT,
+    getTileFromCoord(coord: Point) {
+        const tileCoord = {
+            x: Math.floor(coord.x / TILE_SIZE),
+            y: Math.floor(coord.y / TILE_SIZE),
         }
+        if (tileCoord.x < 0 || tileCoord.x >= this.width || tileCoord.y < 0 || tileCoord.y >= this.height) {
+            return Tile.GROUND;
+        }
+        else {
+            // TODO: Look up from the thing properly
+            return Tile.AIR;
+        }
+    }
+
+    getTilePosFromCoord(coord: {x?: number, y?: number}, tilePos: {x?: number, y?: number}): number {
+        // For the sec, just return the bottom?
+        if (coord.x != null && tilePos.x != null) {
+            const tileX = Math.floor(coord.x / TILE_SIZE);
+            return tileX * TILE_SIZE + tilePos.x * (TILE_SIZE - 1);
+        }
+        if (coord.y != null && tilePos.y != null) {
+            const tileY = Math.floor(coord.y / TILE_SIZE);
+            return tileY * TILE_SIZE + tilePos.y * (TILE_SIZE - 1);
+        }
+        throw 'You did it wrong you dangus';
     }
 }

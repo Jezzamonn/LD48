@@ -65,25 +65,25 @@ export class Entity {
     // Functions that can also be edited by subclasses
     onUpCollision() {
         const resetPos = this.level.getTilePosFromCoord({y: this.minY}, {y: 1});
-        this.minY = resetPos.y + 1;
+        this.minY = resetPos + 1;
 
         this.dy = 0;
     }
     onDownCollision() {
         const resetPos = this.level.getTilePosFromCoord({y: this.maxY}, {y: 0});
-        this.maxY = resetPos.y - 1;
+        this.maxY = resetPos - 1;
 
         this.dy = 0;
     }
     onLeftCollision() {
         const resetPos = this.level.getTilePosFromCoord({x: this.minX}, {x: 0});
-        this.minX = resetPos.x + 1;
+        this.minX = resetPos + 1;
 
         this.dx = 0;
     }
     onRightCollision() {
         const resetPos = this.level.getTilePosFromCoord({x: this.maxX}, {x: 1});
-        this.maxX = resetPos.x - 1;
+        this.maxX = resetPos - 1;
 
         this.dx = 0;
     }
