@@ -21,6 +21,14 @@ export class Level {
             ent.h = fromPx(10);
             this.entities.push(ent);
         }
+
+        this.player = new Player();
+        this.player.level = this;
+        this.player.midX = lerp(0, SCREEN_WIDTH, rng());
+        this.player.maxY = lerp(0, SCREEN_HEIGHT, rng());
+        this.player.w = fromPx(10);
+        this.player.h = fromPx(10);
+        this.entities.push(this.player);
     }
 
     update(dt: number) {

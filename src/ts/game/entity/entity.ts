@@ -13,7 +13,7 @@ export class Entity {
     h: number = 0;
     dx: number = 0;
     dy: number = 0;
-    gravity: number = 3000;
+    gravity: number = 5000;
     canColide: boolean = true;
 
     constructor() {
