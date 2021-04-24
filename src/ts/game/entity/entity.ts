@@ -76,13 +76,13 @@ export class Entity {
         this.dy = 0;
     }
     onLeftCollision() {
-        const resetPos = this.level.getTilePosFromCoord({x: this.minX}, {x: 0});
+        const resetPos = this.level.getTilePosFromCoord({x: this.minX}, {x: 1});
         this.minX = resetPos + 1;
 
         this.dx = 0;
     }
     onRightCollision() {
-        const resetPos = this.level.getTilePosFromCoord({x: this.maxX}, {x: 1});
+        const resetPos = this.level.getTilePosFromCoord({x: this.maxX}, {x: 0});
         this.maxX = resetPos - 1;
 
         this.dx = 0;

@@ -31,8 +31,8 @@ export class Level {
         for (let i = 0; i < 10; i++) {
             const ent = new Entity();
             ent.level = this;
-            ent.midX = lerp(0, SCREEN_WIDTH, rng());
-            ent.maxY = lerp(0, SCREEN_HEIGHT, rng());
+            ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
+            ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
             ent.w = fromPx(10);
             ent.h = fromPx(10);
             this.entities.push(ent);
@@ -40,8 +40,8 @@ export class Level {
 
         this.player = new Player();
         this.player.level = this;
-        this.player.midX = lerp(0, SCREEN_WIDTH, rng());
-        this.player.maxY = lerp(0, SCREEN_HEIGHT, rng());
+        this.player.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
+        this.player.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
         this.player.w = fromPx(10);
         this.player.h = fromPx(10);
         this.entities.push(this.player);
