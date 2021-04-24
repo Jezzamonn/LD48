@@ -1,6 +1,8 @@
 import { lerp } from "../util";
 import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx, toPx, toRoundedPx } from "./constants";
+import { DebugEntity } from "./entity/debug-entity";
 import { Entity } from "./entity/entity";
+import { Pickup } from "./entity/pickup";
 import { Player } from "./entity/player";
 
 export const TILE_SIZE = fromPx(16);
@@ -28,22 +30,23 @@ export class Level {
             this.tiles.push(tileRow);
         }
 
-        for (let i = 0; i < 10; i++) {
-            const ent = new Entity();
-            ent.level = this;
+        for (let i = 0; i < 5; i++) {
+            const ent = new DebugEntity(this);
             ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
             ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
-            ent.w = fromPx(10);
-            ent.h = fromPx(10);
             this.entities.push(ent);
         }
 
-        this.player = new Player();
-        this.player.level = this;
+        for (let i = 0; i < 5; i++) {
+            const ent = new Pickup(this);
+            ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
+            ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
+            this.entities.push(ent);
+        }
+
+        this.player = new Player(this);
         this.player.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
         this.player.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
-        this.player.w = fromPx(10);
-        this.player.h = fromPx(10);
         this.entities.push(this.player);
     }
 
@@ -59,6 +62,15 @@ export class Level {
         for (const entity of this.entities) {
             entity.update(dt);
         }
+    }
+
+    remove(entity: Entity) {
+        const index = this.entities.indexOf(entity);
+        if (index < 0) {
+            console.error(`I cannae remove entity ${entity}`);
+            return;
+        }
+        this.entities.splice(index, 1);
     }
 
     render(context: CanvasRenderingContext2D) {

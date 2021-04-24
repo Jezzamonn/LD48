@@ -4,7 +4,9 @@ import { Level, Tile } from "../level";
 export class Entity {
 
     // Up ref to the level
-    level!: Level;
+    level: Level;
+
+    name: string = 'Entity';
 
     x: number = 0;
     y: number = 0;
@@ -12,17 +14,34 @@ export class Entity {
     h: number = 0;
     dx: number = 0;
     dy: number = 0;
+    dxDampen: number = 1;
     gravity: number = 5000;
     canColide: boolean = true;
 
-    constructor() {
+    debugColor?: string = '#f0f';
+
+    constructor(level: Level) {
+        this.level = level;
+    }
+
+    toString() {
+        return this.name;
     }
 
     update(dt: number) {
-        this.dy += this.gravity * dt;
+        this.applyGravity(dt);
+        this.dampen();
 
         this.moveX(dt);
         this.moveY(dt);
+    }
+
+    applyGravity(dt: number) {
+        this.dy += this.gravity * dt;
+    }
+
+    dampen() {
+        this.dx *= this.dxDampen;
     }
 
     moveX(dt: number) {
@@ -90,7 +109,10 @@ export class Entity {
 
     render(context: CanvasRenderingContext2D) {
         // Debug rendering
-        context.fillStyle = '#f0f';
+        if (this.debugColor == null) {
+            return;
+        }
+        context.fillStyle = this.debugColor;
         context.fillRect(toRoundedPx(this.minX), toRoundedPx(this.minY), toRoundedPx(this.w), toRoundedPx(this.h));
     }
 
@@ -154,6 +176,19 @@ export class Entity {
         return coords.every(coord => this.level.coordIsTouching(coord, tile));
     }
 
+    isTouchingEntity(ent: Entity) {
+        return (
+            (ent.maxX > this.minX) &&
+            (this.maxX > ent.minX) &&
+            (ent.maxY > this.minY) &&
+            (this.maxY > ent.minY)
+        );
+    }
+
+    removeFromLevel() {
+        this.level.remove(this);
+    }
+
     //#region Getters and setter and junk.
     get minX() {
         return this.x;
@@ -188,19 +223,19 @@ export class Entity {
     }
 
     get midY() {
-        return this.y + this.w / 2;
+        return this.y + this.h / 2;
     }
 
     set midY(val: number) {
-        this.y = val - this.w / 2;
+        this.y = val - this.h / 2;
     }
 
     get maxY() {
-        return this.y + this.w;
+        return this.y + this.h;
     }
 
     set maxY(val: number) {
-        this.y = val - this.w;
+        this.y = val - this.h;
     }
 
     //#endregion
