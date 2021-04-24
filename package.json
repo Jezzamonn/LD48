@@ -1,0 +1,42 @@
+{
+  "name": "ld48",
+  "version": "1.0.0",
+  "description": "ld48",
+  "main": "index.js",
+  "scripts": {
+    "watch": "npm-watch",
+    "reload": "reload -b -d build/client",
+    "static": "mkdir -p build/client/ && rsync -a --delete --exclude js/ src/static/ build/client/",
+    "webpack": "webpack",
+    "clean": "rm -rf build/*"
+  },
+  "watch": {
+    "static": {
+      "patterns": [
+        "src/static/**"
+      ],
+      "extensions": "html,css"
+    },
+    "webpack": {
+      "patterns": [
+        "src/ts/**"
+      ],
+      "extensions": "js,jsx,ts,tsx"
+    }
+  },
+  "author": "Jezzamon",
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.13.16",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "babel-loader": "^8.2.2",
+    "npm-watch": "^0.9.0",
+    "reload": "^3.1.1",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {}
+}
