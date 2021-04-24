@@ -1,5 +1,5 @@
 import { number } from "yargs";
-import { toPx } from "../constants";
+import { toPx, toRoundedPx } from "../constants";
 import { Level, TILE_GROUND } from "../level";
 
 export class Entity {
@@ -53,7 +53,7 @@ export class Entity {
     render(context: CanvasRenderingContext2D) {
         // Debug rendering
         context.fillStyle = '#f0f';
-        context.fillRect(toPx(this.minX), toPx(this.minY), toPx(this.w), toPx(this.h));
+        context.fillRect(toRoundedPx(this.minX), toRoundedPx(this.minY), toRoundedPx(this.w), toRoundedPx(this.h));
     }
 
     // Getters and setter and junk.

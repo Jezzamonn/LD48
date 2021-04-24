@@ -10,6 +10,10 @@ export function toPx(val: number): number {
     return val / PX_SCALE;
 }
 
+export function toRoundedPx(val: number): number {
+    return Math.round(val / PX_SCALE);
+}
+
 export function fromPx(val: number): number {
     return val * PX_SCALE;
 }
