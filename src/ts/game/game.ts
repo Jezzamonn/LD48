@@ -17,6 +17,7 @@ export class Game {
     }
 
     render(context: CanvasRenderingContext2D) {
+        context.resetTransform();
         this.activeSubGame.render(context);
     }
 }
