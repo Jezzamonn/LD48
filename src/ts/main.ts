@@ -1,4 +1,5 @@
 import { PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH } from "./game/constants";
+import { Game } from "./game/game";
 import { Level } from "./game/level";
 import { SubGame } from "./game/subgame";
 import { Keys } from "./keys";
@@ -11,7 +12,7 @@ let context: CanvasRenderingContext2D;
 let simulatedTimeMs: number;
 let timeStep = 1 / 60;
 
-let subGame: SubGame;
+let game: Game;
 
 function init() {
     canvas = document.querySelector('.canvas')!;
@@ -24,8 +25,11 @@ function init() {
 
     Keys.setUp();
 
-    subGame = new SubGame();
+    const subGame = new SubGame();
     subGame.level = new Level();
+
+    game = new Game();
+    game.subGames.push(subGame);
 
     requestAnimationFrame(doAnimationFrame);
 }
@@ -55,12 +59,12 @@ function doAnimationFrame() {
 }
 
 function update() {
-    subGame.update(timeStep);
+    game.update(timeStep);
     Keys.resetFrame();
 }
 
 function render() {
-    subGame.render(context);
+    game.render(context);
 }
 
 
