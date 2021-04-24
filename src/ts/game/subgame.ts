@@ -6,8 +6,8 @@ export class SubGame {
 
     constructor() {}
 
-    update() {
-        this.level.update();
+    update(dt: number) {
+        this.level.update(dt);
     }
 
     render(context: CanvasRenderingContext2D) {

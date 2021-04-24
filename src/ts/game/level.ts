@@ -1,4 +1,5 @@
-import { Point, SCREEN_HEIGHT } from "./constants";
+import { lerp } from "../util";
+import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx } from "./constants";
 import { Entity } from "./entity/entity";
 import { Player } from "./entity/player";
 
@@ -8,14 +9,23 @@ export const TILE_GROUND = 1;
 export class Level {
 
     player: Player;
-    entities: Entity[];
+    entities: Entity[] = [];
 
     constructor() {
+        for (let i = 0; i < 10; i++) {
+            const ent = new Entity();
+            ent.level = this;
+            ent.midX = lerp(0, SCREEN_WIDTH, rng());
+            ent.maxY = lerp(0, SCREEN_HEIGHT, rng());
+            ent.w = fromPx(10);
+            ent.h = fromPx(10);
+            this.entities.push(ent);
+        }
     }
 
-    update() {
+    update(dt: number) {
         for (const entity of this.entities) {
-            entity.update();
+            entity.update(dt);
         }
     }
 
@@ -33,7 +43,15 @@ export class Level {
     }
 
     coordIsTouching(pos: Point, type: number): boolean {
-        const pretendType = pos.y > SCREEN_HEIGHT ? TILE_AIR : TILE_GROUND;
+        const pretendType = pos.y < SCREEN_HEIGHT ? TILE_AIR : TILE_GROUND;
         return pretendType == type;
+    }
+
+    getTilePosFromCoord(coord: Point, tilePos: Point): Point {
+        // For the sec, just return the bottom?
+        return {
+            x: 0,
+            y: SCREEN_HEIGHT,
+        }
     }
 }

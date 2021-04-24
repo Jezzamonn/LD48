@@ -35,7 +35,8 @@ function doAnimationFrame() {
     let curTimeMs = Date.now();
     let updateCount = 0;
     while (simulatedTimeMs < curTimeMs) {
-        subGame.update();
+        subGame.update(timeStep);
+
         simulatedTimeMs += timeStep * 1000;
 
         updateCount++;

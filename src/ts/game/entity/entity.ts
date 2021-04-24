@@ -1,71 +1,107 @@
+import { number } from "yargs";
 import { toPx } from "../constants";
+import { Level, TILE_GROUND } from "../level";
 
 export class Entity {
 
-    x: number;
-    y: number;
-    w: number;
-    h: number;
+    // Up ref to the level
+    level: Level;
+
+    x: number = 0;
+    y: number = 0;
+    w: number = 0;
+    h: number = 0;
+    dx: number = 0;
+    dy: number = 0;
+    gravity: number = 3000;
+    canColide: boolean = true;
 
     constructor() {
     }
 
-    update() {
-        // Nothing yet.
+    update(dt: number) {
+        this.dy += this.gravity * dt;
+
+        this.moveX(dt);
+        this.moveY(dt);
+    }
+
+    moveX(dt: number) {
+        this.x += this.dx * dt;
+        this.x = Math.round(this.x);
+
+        // TODO: Horizontal collision
+        if (this.canColide) {
+        }
+    }
+
+    moveY(dt: number) {
+        this.y += this.dy * dt;
+        this.y = Math.round(this.y);
+
+        // TODO: Upward collision
+        if (this.canColide) {
+            if (this.level.coordIsTouching({x: this.minX, y: this.maxY}, TILE_GROUND) ||
+                this.level.coordIsTouching({x: this.maxX, y: this.maxY}, TILE_GROUND)) {
+
+                const resetPos = this.level.getTilePosFromCoord({x: this.midX, y: this.maxY}, {x: 0, y: 0});
+                this.maxY = resetPos.y;
+            }
+        }
     }
 
     render(context: CanvasRenderingContext2D) {
         // Debug rendering
         context.fillStyle = '#f0f';
-        context.fillRect(toPx(this.topX), toPx(this.topY), toPx(this.w), toPx(this.h));
+        context.fillRect(toPx(this.minX), toPx(this.minY), toPx(this.w), toPx(this.h));
     }
 
     // Getters and setter and junk.
-    get topX() {
+    get minX() {
         return this.x;
     }
 
-    set topX(val: number) {
+    set minX(val: number) {
         this.x = val;
     }
 
-    get centerX() {
+    get midX() {
         return this.x + this.w / 2;
     }
 
-    set centerX(val: number) {
+    set midX(val: number) {
         this.x = val - this.w / 2;
     }
 
-    get bottomX() {
+    get maxX() {
         return this.x + this.w;
     }
 
-    set bottomX(val: number) {
+    set maxX(val: number) {
         this.x = val - this.w;
     }
 
-    get topY() {
+    get minY() {
         return this.y;
     }
 
-    set topY(val: number) {
+    set minY(val: number) {
         this.y = val;
     }
 
-    get centerY() {
+    get midY() {
         return this.y + this.w / 2;
     }
 
-    set centerY(val: number) {
+    set midY(val: number) {
         this.y = val - this.w / 2;
     }
 
-    get bottomY() {
+    get maxY() {
         return this.y + this.w;
     }
 
-    set bottomY(val: number) {
+    set maxY(val: number) {
         this.y = val - this.w;
     }
 }
