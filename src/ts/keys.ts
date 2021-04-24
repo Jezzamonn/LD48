@@ -1,3 +1,5 @@
+const disableDefaultKeys = new Set(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"]);
+
 class _Keys {
     #pressedKeys: Set<string> = new Set();
     #pressedThisFrame: Set<string> = new Set();
@@ -8,6 +10,11 @@ class _Keys {
         document.addEventListener('keydown', (evt) => {
             this.#pressedKeys.add(evt.code);
             this.#pressedThisFrame.add(evt.code);
+
+            // Also disable scrolling
+            if (disableDefaultKeys.has(evt.code)) {
+                evt.preventDefault();
+            }
         });
         document.addEventListener('keyup', (evt) => {
             this.#pressedKeys.delete(evt.code);

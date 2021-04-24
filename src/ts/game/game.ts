@@ -1,3 +1,4 @@
+import { Keys } from "../keys";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
@@ -6,17 +7,7 @@ export class Game {
     allSubGames: SubGame[] = [];
 
     subGames: SubGame[] = [];
-    // activeSubGameIndex = 0;
-
-    get activeSubGameIndex() {
-        for (let i = 0; i < this.subGames.length; i++) {
-            const subGame = this.subGames[i];
-            if (subGame.level.player.pickup == null) {
-                return i;
-            }
-        }
-        return this.subGames.length - 1;
-    }
+    activeSubGameIndex = 0;
 
     constructor() {
         const container = document.querySelector('.content')!;
@@ -36,6 +27,31 @@ export class Game {
 
     update(dt: number) {
         this.activeSubGame.update(dt);
+
+        // Go up a game
+        if (Keys.wasPressedThisFrame('KeyS')) {
+            this.goUpAGame();
+        }
+        if (Keys.wasPressedThisFrame('KeyD')) {
+            this.goDownAGame();
+        }
+    }
+
+    goUpAGame() {
+        if (this.activeSubGameIndex <= 0) {
+            return;
+        }
+        this.activeSubGameIndex--;
+        this.activeSubGame.canvas.scrollIntoView({behavior: 'smooth'});
+    }
+
+    goDownAGame() {
+        if (this.activeSubGameIndex >= this.subGames.length - 1) {
+            return;
+        }
+
+        this.activeSubGameIndex++;
+        this.activeSubGame.canvas.scrollIntoView({behavior: 'smooth'});
     }
 
     render() {
