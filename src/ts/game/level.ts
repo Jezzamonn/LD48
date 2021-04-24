@@ -1,7 +1,11 @@
 import { lerp } from "../util";
-import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx } from "./constants";
+import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx, toPx, toRoundedPx } from "./constants";
 import { Entity } from "./entity/entity";
 import { Player } from "./entity/player";
+
+export const TILE_SIZE = fromPx(16);
+
+const DEBUG_GROUND_COLOR = '#21235e';
 
 export enum Tile {
     AIR,
@@ -12,8 +16,18 @@ export class Level {
 
     player: Player;
     entities: Entity[] = [];
+    tiles: Tile[][] = [];
 
     constructor() {
+        // Some example set of tiles for the moment?
+        for (let y = 0; y < 10; y++) {
+            const tileRow: Tile[] = [];
+            for (let x = 0; x < 16; x++) {
+                tileRow[x] = rng() < 0.1 ? Tile.GROUND : Tile.AIR;
+            }
+            this.tiles.push(tileRow);
+        }
+
         for (let i = 0; i < 10; i++) {
             const ent = new Entity();
             ent.level = this;
@@ -33,6 +47,14 @@ export class Level {
         this.entities.push(this.player);
     }
 
+    get width() {
+        return this.tiles[0].length;
+    }
+
+    get height() {
+        return this.tiles.length;
+    }
+
     update(dt: number) {
         for (const entity of this.entities) {
             entity.update(dt);
@@ -43,13 +65,66 @@ export class Level {
         // Just fill the canvas for the mo.
         context.save();
         context.resetTransform();
-        context.fillStyle = 'white';
+        context.fillStyle = '#f7f3cb';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.restore();
+
+        // Just render ALL the tiles for the moment.
+        this.renderFrame(context);
+        this.renderTiles(context);
 
         for (const entity of this.entities) {
             entity.render(context);
         }
+    }
+
+    renderTiles(context:CanvasRenderingContext2D) {
+        for (let y = 0; y < this.tiles.length; y++) {
+            for (let x = 0; x < this.tiles[0].length; x++) {
+                const tile = this.tiles[y][x];
+
+                if (tile == Tile.GROUND) {
+                    context.fillStyle = DEBUG_GROUND_COLOR;
+                    context.fillRect(
+                        toRoundedPx(x * TILE_SIZE),
+                        toRoundedPx(y * TILE_SIZE),
+                        toPx(TILE_SIZE),
+                        toPx(TILE_SIZE),
+                    );
+                }
+
+            }
+        }
+    }
+
+    renderFrame(context: CanvasRenderingContext2D) {
+        // hehe not that big yet
+        const thickness = 10;
+        const extendness = 5;
+        context.fillStyle = DEBUG_GROUND_COLOR;
+        // Floor
+        context.fillRect(
+            -extendness,
+            toRoundedPx(this.height * TILE_SIZE),
+            toRoundedPx(this.width * TILE_SIZE) + 2 * extendness,
+            thickness,
+        )
+        // Left Wall
+        context.fillRect(
+            -thickness,
+            -extendness,
+            thickness,
+            toRoundedPx(this.height * TILE_SIZE) + 2 * extendness,
+        )
+        // Right Wall
+        context.fillRect(
+            toRoundedPx(this.width * TILE_SIZE),
+            -extendness,
+            thickness,
+            toRoundedPx(this.height * TILE_SIZE) + 2 * extendness,
+        )
+
+        // No sky for the moment I guess?
     }
 
     coordIsTouching(pos: Point, type: Tile): boolean {
