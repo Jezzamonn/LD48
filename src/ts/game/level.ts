@@ -120,7 +120,7 @@ export class Level {
 
     render(context: CanvasRenderingContext2D) {
         // Just fill the canvas for the mo.
-        // context.filter = `hue-rotate(${60 * this.subGame.index}deg)`
+        context.filter = `hue-rotate(${60 * this.subGame.index}deg)`
 
         context.save();
         context.resetTransform();
@@ -129,7 +129,7 @@ export class Level {
         context.restore();
 
         // Just render ALL the tiles for the moment.
-        this.renderFrame(context);
+        // this.renderFrame(context);
         this.renderTiles(context);
 
         for (const entity of this.entities) {
@@ -144,6 +144,15 @@ export class Level {
 
         for (let y = -1; y <= this.height; y++) {
             for (let x = -1; x <= this.width; x++) {
+
+                // A little more efficient.
+                if ((x + 1) * TILE_SIZE < this.subGame.camera.minVisibleX ||
+                    (x - 1) * TILE_SIZE > this.subGame.camera.maxVisibleX ||
+                    (y + 1) * TILE_SIZE < this.subGame.camera.minVisibleY ||
+                    (y - 1) * TILE_SIZE > this.subGame.camera.maxVisibleY) {
+                    continue;
+                }
+
                 const tile = this.getTile({x, y});
 
                 if (tile == Tile.GROUND) {
