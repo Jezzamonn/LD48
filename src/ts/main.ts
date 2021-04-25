@@ -9,8 +9,10 @@ let timeStep = 1 / 60;
 
 let game: Game;
 
-function init() {
+async function init() {
     Keys.setUp();
+
+    await Game.loadAllImages();
 
     game = new Game();
 

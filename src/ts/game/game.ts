@@ -1,3 +1,4 @@
+import * as Images from "../images";
 import { Keys } from "../keys";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
@@ -9,9 +10,9 @@ export class Game {
     activeSubGameIndex = 0;
 
     constructor() {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             const subGame = new SubGame(this, i);
-            subGame.level = new Level(subGame);
+            subGame.level = new Level(subGame, Images.images[`level${i+1}`].image!);
             this.allSubGames.push(subGame);
         }
 
@@ -45,6 +46,11 @@ export class Game {
         }
         for (const subGame of this.subGames) {
             container.append(subGame.canvas);
+        }
+
+        // Also render each thingo
+        for (const subGame of this.subGames) {
+            subGame.render();
         }
     }
 
@@ -82,8 +88,14 @@ export class Game {
     }
 
     render() {
-        for (const subGame of this.subGames) {
-            subGame.render();
+        this.activeSubGame.render();
+    }
+
+    static loadAllImages(): Promise<void[]> {
+        const promises: Promise<void>[] = [];
+        for (let i = 1; i <= 2; i++) {
+            promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
+        return Promise.all(promises);
     }
 }

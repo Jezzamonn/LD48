@@ -21,42 +21,74 @@ export enum Tile {
 export class Level {
 
     subGame: SubGame;
-    player: Player;
+    player!: Player;
     entities: Entity[] = [];
     tiles: Tile[][] = [];
 
-    constructor(subGame: SubGame) {
+    constructor(subGame: SubGame, levelImage: HTMLImageElement) {
         this.subGame = subGame;
 
-        // Some example set of tiles for the moment?
-        for (let y = 0; y < 10; y++) {
+        this.initFromImage(levelImage);
+    }
+
+    initFromImage(levelImage: HTMLImageElement) {
+        for (let y = 0; y < levelImage.height; y++) {
             const tileRow: Tile[] = [];
-            for (let x = 0; x < 16; x++) {
-                tileRow[x] = rng() < 0.1 ? Tile.GROUND : Tile.AIR;
+            for (let x = 0; x < levelImage.width; x++) {
+                tileRow[x] = Tile.AIR;
             }
             this.tiles.push(tileRow);
         }
 
-        for (let i = 0; i < 5; i++) {
-            const ent = new DebugEntity(this);
-            ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
-            ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
-            this.entities.push(ent);
+
+        // Gotta draw it to a canvas to get the pixels
+        const canvas = document.createElement('canvas');
+        canvas.width = levelImage.width;
+        canvas.height = levelImage.height;
+        const context = canvas.getContext('2d')!
+        context.drawImage(levelImage, 0, 0, levelImage.width, levelImage.height);
+
+        for (let y = 0; y < levelImage.height; y++) {
+            for (let x = 0; x < levelImage.width; x++) {
+                const colorArray = context.getImageData(x, y, 1, 1);
+                const colorString = Array.from(colorArray.data.slice(0, 3))
+                    .map(d => d.toString(16))
+                    .map(s => {
+                        while(s.length < 2) {
+                            s = '0' + s;
+                        }
+                        return s;
+                    })
+                    .join('');
+                const b = colorArray.data[2];
+
+                console.log(colorString);
+                if (colorString == '000000') {
+                    this.tiles[y][x] = Tile.GROUND;
+                }
+                else if (colorString == 'ff00ff') {
+                    console.log('add player')
+                    this.player = this.addEntity(Player, {x, y});
+                }
+                else if (colorString.startsWith('00ff')) {
+                    const pickup = this.addEntity(Pickup, {x, y});
+                    pickup.subGameIndex = b;
+                }
+            }
         }
 
-        for (let i = 0; i < 5; i++) {
-            const ent = new Pickup(this);
-            ent.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
-            ent.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
-            this.entities.push(ent);
-
-            ent.subGameIndex = this.subGame.index + 1;
+        if (this.player == null) {
+            throw new Error(`No player for level ${this.subGame.index}`);
         }
+    }
 
-        this.player = new Player(this);
-        this.player.midX = Math.floor(lerp(0, TILE_SIZE * this.width, rng()));
-        this.player.maxY = Math.floor(lerp(0, TILE_SIZE * this.height, rng()));
-        this.entities.push(this.player);
+    addEntity<T extends Entity>(clazz: new (...args: any[]) => T, tilePos:Point): T {
+        const ent: T = new clazz(this);
+        ent.midX = tilePos.x * TILE_SIZE + 0.5 * (TILE_SIZE - 1);
+        ent.maxY = tilePos.y * TILE_SIZE + (TILE_SIZE - 1);
+        this.entities.push(ent);
+
+        return ent;
     }
 
     get width() {
@@ -84,7 +116,7 @@ export class Level {
 
     render(context: CanvasRenderingContext2D) {
         // Just fill the canvas for the mo.
-        context.filter = `hue-rotate(${40 * this.subGame.index}deg)`
+        context.filter = `hue-rotate(${60 * this.subGame.index}deg)`
 
         context.save();
         context.resetTransform();
