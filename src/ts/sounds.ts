@@ -8,6 +8,7 @@ class _Sounds {
     audios: {[key: string]: SoundInfo} = {};
 
     curSong?: HTMLAudioElement;
+    curSongName?: string;
 
     /**
      * Asynchronously fetches an audio.
@@ -51,18 +52,33 @@ class _Sounds {
         if (name == 'jump') {
             audio.volume = 0.3;
         }
+        if (name == 'land') {
+            audio.volume = 0.4;
+        }
         if (name == 'shoot') {
             audio.volume = 0.4;
         }
         if (name == 'shoot2') {
             audio.volume = 0.2;
         }
+        if (name == 'hit') {
+            audio.volume = 0.3;
+        }
         audio.play();
     }
 
     // TODO: Use the same position.
     async setSong(songName: string) {
+        if (this.curSongName == songName) {
+            return;
+        }
+
+        const songPos = this.curSong?.currentTime;
+        const lastSongName = this.curSongName;
+
         this.curSong?.pause();
+        this.curSong = undefined;
+        this.curSongName = undefined;
 
         const audioInfo = this.audios[songName];
         if (audioInfo == null) {
@@ -78,18 +94,17 @@ class _Sounds {
             return;
         }
 
-        audio.onended = () => {
-            // Only loop if it's the currently playing song
-            if (audio != this.curSong) {
-                return;
-            }
-            audio.play();
-        }
         audio.volume = 0.5;
+        audio.loop = true;
+
+        if (lastSongName?.startsWith('main') && songName.startsWith('main') && songPos) {
+            audio.currentTime = songPos;
+        }
 
         audio.play();
 
         this.curSong = audio;
+        this.curSongName = songName;
     }
 }
 

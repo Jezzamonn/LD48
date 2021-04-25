@@ -40,7 +40,7 @@ export class Game {
 
         this.updateCanvases();
 
-        Sounds.setSong('cute');
+        this.updateSong();
     }
 
     get subGameIndexes(): number[] {
@@ -119,6 +119,8 @@ export class Game {
         this.activeSubGameIndex--;
         this.updateZoom();
         this.updateFades();
+
+        this.updateSong();
     }
 
     goDownAGame() {
@@ -129,6 +131,28 @@ export class Game {
         this.activeSubGameIndex++;
         this.updateZoom();
         this.updateFades();
+
+        this.updateSong();
+    }
+
+    updateSong() {
+        let songIndex = this.activeSubGameIndex + 1;
+        if (songIndex > 5) {
+            songIndex = 5;
+        }
+        let songName = `main${songIndex}`;
+        // Some levels get special treatment
+        switch (this.activeSubGame.index) {
+            case 9:
+                songName = 'main5';
+                break;
+            case 3:
+            case 6:
+            case 8:
+                songName = 'cute';
+                break;
+        }
+        Sounds.setSong(songName);
     }
 
     updateZoom() {
