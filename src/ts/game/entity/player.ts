@@ -17,6 +17,7 @@ Sounds.loadSound({name: 'jump', path: 'sfx/'});
 Sounds.loadSound({name: 'land', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot2', path: 'sfx/'});
+Sounds.loadSound({name: 'explosion', path: 'sfx/'});
 
 export class Player extends Entity {
 
@@ -217,6 +218,7 @@ export class Player extends Entity {
 
     takeDamage() {
         // Wowo!
+        Sounds.playSound('explosion');
         this.level.reset();
     }
 }
