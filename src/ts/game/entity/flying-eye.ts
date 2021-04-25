@@ -7,6 +7,9 @@ Aseprite.loadImage({name: 'flying_eye', basePath: 'sprites/'});
 
 export class FlyingEye extends Entity {
 
+    hurtCount = 0;
+    hurtCountLength = 0.1;
+
     constructor(level: Level) {
         super(level);
 
@@ -15,18 +18,40 @@ export class FlyingEye extends Entity {
         this.h = fromPx(8);
 
         this.gravity = 0;
+        this.isEnemy = true;
+        this.health = 3;
+    }
+
+    update(dt: number) {
+        super.update(dt);
+
+        if (this.hurtCount > 0) {
+            this.hurtCount -= dt;
+        }
     }
 
     render(context: CanvasRenderingContext2D) {
         Aseprite.drawAnimation({
             context,
             image: 'flying_eye',
-            animationName: 'flying',
+            animationName: this.hurtCount > 0 ? 'hurt' : 'flying',
             time: this.animCount,
             position: {
                 x: toRoundedPx(this.x),
                 y: toRoundedPx(this.y)
             },
         });
+    }
+
+    takeDamage() {
+        // TODO: Hurt SFX
+        // TODO: Hurt VFX
+        this.health--;
+
+        this.hurtCount = this.hurtCountLength;
+
+        if (this.health == 0) {
+            this.removeFromLevel();
+        }
     }
 }

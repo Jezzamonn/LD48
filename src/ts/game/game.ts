@@ -1,6 +1,6 @@
 import * as Images from "../images";
 import { Keys } from "../keys";
-import { Power } from "./entity/pickup";
+import { Power } from "./constants";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
@@ -54,7 +54,7 @@ export class Game {
 
 
     get currentPowers(): Set<Power> {
-        const s = new Set<Power>();
+        const s = new Set<Power>([Power.SHOOT]);
 
         for (const subGame of this.subGames) {
             const power = subGame.level.player.pickup?.power;

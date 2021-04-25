@@ -75,7 +75,7 @@ export class Level {
                     pickup.subGameIndex = b;
                 }
                 else if (colorString == 'ff0000') {
-                    // this.addEntity(FlyingEye, {x, y});
+                    this.addEntity(FlyingEye, {x, y});
                 }
             }
         }

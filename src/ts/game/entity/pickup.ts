@@ -1,15 +1,9 @@
-import { fromPx, toRoundedPx } from "../constants";
+import { fromPx, Power, toRoundedPx } from "../constants";
 import { Level } from "../level";
 import { Entity } from "./entity";
 import * as Aseprite from "../../aseprite";
 
 Aseprite.loadImage({name: 'gameboy', basePath: 'sprites/'});
-
-export enum Power {
-    DOUBLE_JUMP = 0,
-    DASH = 1,
-    SHOOT = 2,
-}
 
 export class Pickup extends Entity {
 

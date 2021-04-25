@@ -1,8 +1,8 @@
 import { Keys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
-import { fromPx, rng, toRoundedPx } from "../constants";
-import { Pickup, Power } from "./pickup";
+import { fromPx, rng, toRoundedPx, Power } from "../constants";
+import { Pickup } from "./pickup";
 import { lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";

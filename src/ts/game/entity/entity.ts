@@ -29,6 +29,7 @@ export class Entity {
     debugColor?: string = '#f0f';
 
     isEnemy: boolean = false;
+    health = 1
 
     constructor(level: Level) {
         this.level = level;

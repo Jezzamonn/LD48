@@ -15,6 +15,12 @@ export enum Dir {
     DOWN,
 }
 
+export enum Power {
+    DOUBLE_JUMP = 0,
+    DASH = 1,
+    SHOOT = 2,
+}
+
 export function toPx(val: number): number {
     return val / PX_SCALE;
 }
