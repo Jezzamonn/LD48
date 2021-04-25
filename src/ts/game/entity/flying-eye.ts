@@ -2,6 +2,7 @@ import { Entity } from "./entity";
 import { fromPx, toRoundedPx } from "../constants";
 import { Level } from "../level";
 import * as Aseprite from "../../aseprite";
+import { Sounds } from "../../sounds";
 
 Aseprite.loadImage({name: 'flying_eye', basePath: 'sprites/'});
 
@@ -47,11 +48,14 @@ export class FlyingEye extends Entity {
         // TODO: Hurt SFX
         // TODO: Hurt VFX
         this.health--;
+        Sounds.playSound('shoot2');
 
         this.hurtCount = this.hurtCountLength;
 
         if (this.health == 0) {
             this.removeFromLevel();
         }
+
+
     }
 }

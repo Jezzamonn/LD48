@@ -15,6 +15,7 @@ Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
 Sounds.loadSound({name: 'jump', path: 'sfx/'});
 Sounds.loadSound({name: 'land', path: 'sfx/'});
+Sounds.loadSound({name: 'shoot', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot2', path: 'sfx/'});
 
 export class Player extends Entity {
@@ -123,7 +124,7 @@ export class Player extends Entity {
     }
 
     fire() {
-        Sounds.playSound('shoot2');
+        Sounds.playSound('shoot');
 
         const bullet = new Bullet(this.level);
         bullet.midX = this.pickupX;

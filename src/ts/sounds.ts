@@ -46,8 +46,11 @@ class _Sounds {
         if (name == 'jump') {
             audio.volume = 0.3;
         }
+        if (name == 'shoot') {
+            audio.volume = 0.4;
+        }
         if (name == 'shoot2') {
-            audio.volume = 0.1;
+            audio.volume = 0.2;
         }
         audio.play();
     }
