@@ -1,12 +1,20 @@
 import * as Images from "../images";
 import { Keys } from "../keys";
+import { Sounds } from "../sounds";
 import { Power } from "./constants";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
-const startSubGame = 5;
+const startSubGame = 0;
+
+Sounds.loadSound({name: 'main1', path: 'music/'});
+Sounds.loadSound({name: 'main2', path: 'music/'});
+Sounds.loadSound({name: 'main3', path: 'music/'});
+Sounds.loadSound({name: 'main4', path: 'music/'});
+Sounds.loadSound({name: 'main5', path: 'music/'});
+Sounds.loadSound({name: 'cute', path: 'music/'});
 
 export class Game {
 
@@ -30,8 +38,9 @@ export class Game {
 
         container.append(this.activeSubGame.element);
 
-
         this.updateCanvases();
+
+        Sounds.setSong('cute');
     }
 
     get subGameIndexes(): number[] {
@@ -150,7 +159,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 0; i <= 6; i++) {
+        for (let i = 0; i <= 9; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));
