@@ -6,11 +6,15 @@ import { Pickup, Power } from "./pickup";
 import { lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";
+import { Sounds } from "../../sounds";
 
 const jumpSpeed = 1550;
 const walkSpeed = 600;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
+
+Sounds.loadSound({name: 'jump', path: 'sfx/'});
+Sounds.loadSound({name: 'land', path: 'sfx/'});
 
 export class Player extends Entity {
 
@@ -114,6 +118,7 @@ export class Player extends Entity {
 
     jump() {
         this.dy = -jumpSpeed;
+        Sounds.audios['jump'].audio?.play();
     }
 
     fire() {
@@ -203,5 +208,7 @@ export class Player extends Entity {
         super.onDownCollision();
 
         this.midAir = false;
+
+        Sounds.audios['land'].audio?.play();
     }
 }

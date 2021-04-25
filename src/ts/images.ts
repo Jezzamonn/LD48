@@ -1,5 +1,3 @@
-import { string } from "yargs";
-
 export const images: {[key: string]: ImageInfo} = {};
 
 interface ImageInfo {
@@ -12,7 +10,7 @@ interface ImageInfo {
  * Asynchronously fetches an image.
  */
 export function loadImage({name, path} : {name: string, path: string}) {
-    const promise = new Promise<void>((resolve, reject) => {
+    const promise = new Promise<void>((resolve) => {
         if (images.hasOwnProperty(name)) {
             throw new Error(`Already loaded image ${name}.`);
         }

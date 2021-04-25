@@ -9,10 +9,14 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    transition: transform 1s;
 }
 
 .subgame {
     position: relative;
+    margin-top: 0;
+    transition: margin 0.5s;
 }
 
 .canvas {
@@ -24,6 +28,13 @@ html, body {
     image-rendering: crisp-edges;
 }
 
+.subgame-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1, 0.1);
+}
+
 .frame {
     position: absolute;
     image-rendering: -moz-crisp-edges;
@@ -31,4 +42,8 @@ html, body {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     z-index: 1;
+}
+
+.faded {
+    margin-top: 3000px;
 }

@@ -4,6 +4,8 @@ import { Power } from "./entity/pickup";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
+export const subGameScale = 0.1;
+
 export class Game {
 
     allSubGames: SubGame[] = [];
@@ -18,6 +20,14 @@ export class Game {
         }
 
         this.subGames.push(this.allSubGames[0]);
+
+        const container = document.querySelector('.content');
+        if (container == null) {
+            throw new Error('No content??')
+        }
+
+        container.append(this.allSubGames[0].element);
+
 
         this.updateCanvases();
     }
@@ -56,18 +66,23 @@ export class Game {
     }
 
     updateCanvases() {
-        const container = document.querySelector('.content')!;
-        while (container.firstChild) {
-            container.removeChild(container.lastChild!);
+        const subGames = this.subGames;
+
+        for (const subGame of subGames) {
+            while (subGame.subGameContainer.firstChild) {
+                subGame.subGameContainer.removeChild(subGame.subGameContainer.lastChild!);
+            }
         }
-        for (const subGame of this.subGames) {
-            container.append(subGame.element);
+
+        for (let i = 0; i < subGames.length - 1; i++) {
+            subGames[i].subGameContainer.append(subGames[i+1].element);
         }
 
         // Also render each thingo
         for (const subGame of this.subGames) {
             subGame.render();
         }
+        this.updateFades();
     }
 
     get activeSubGame() {
@@ -91,7 +106,8 @@ export class Game {
             return;
         }
         this.activeSubGameIndex--;
-        this.activeSubGame.canvas.scrollIntoView({behavior: 'smooth'});
+        this.updateZoom();
+        this.updateFades();
     }
 
     goDownAGame() {
@@ -100,7 +116,30 @@ export class Game {
         }
 
         this.activeSubGameIndex++;
-        this.activeSubGame.canvas.scrollIntoView({behavior: 'smooth'});
+        this.updateZoom();
+        this.updateFades();
+    }
+
+    updateZoom() {
+        const zoomPerLevel = 1 / subGameScale;
+        const container = document.querySelector('.content') as HTMLElement;
+
+        const zoom = Math.pow(zoomPerLevel, this.activeSubGameIndex);
+
+        container.style.transform = `scale(${zoom})`;
+    }
+
+    updateFades() {
+        const subGames = this.subGames;
+
+        for (let i = 0; i < subGames.length; i++) {
+            if (i > this.activeSubGameIndex) {
+                subGames[i].element.classList.add('faded')
+            }
+            else {
+                subGames[i].element.classList.remove('faded')
+            }
+        }
     }
 
     render() {
