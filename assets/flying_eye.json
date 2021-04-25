@@ -1,0 +1,51 @@
+{ "frames": [
+   {
+    "filename": "flying_eye 0.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 12, "h": 12 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 12, "h": 12 },
+    "sourceSize": { "w": 12, "h": 12 },
+    "duration": 100
+   },
+   {
+    "filename": "flying_eye 1.aseprite",
+    "frame": { "x": 14, "y": 1, "w": 12, "h": 12 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 12, "h": 12 },
+    "sourceSize": { "w": 12, "h": 12 },
+    "duration": 100
+   },
+   {
+    "filename": "flying_eye 2.aseprite",
+    "frame": { "x": 1, "y": 14, "w": 12, "h": 12 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 12, "h": 12 },
+    "sourceSize": { "w": 12, "h": 12 },
+    "duration": 100
+   },
+   {
+    "filename": "flying_eye 3.aseprite",
+    "frame": { "x": 14, "y": 14, "w": 12, "h": 12 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 12, "h": 12 },
+    "sourceSize": { "w": 12, "h": 12 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "flying_eye.png",
+  "format": "RGBA8888",
+  "size": { "w": 27, "h": 27 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "flying", "from": 0, "to": 1, "direction": "forward" },
+   { "name": "hurt", "from": 2, "to": 3, "direction": "forward" }
+  ]
+ }
+}

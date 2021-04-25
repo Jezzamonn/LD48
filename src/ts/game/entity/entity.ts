@@ -28,6 +28,8 @@ export class Entity {
 
     debugColor?: string = '#f0f';
 
+    isEnemy: boolean = false;
+
     constructor(level: Level) {
         this.level = level;
     }
@@ -44,6 +46,11 @@ export class Entity {
 
         this.moveX(dt);
         this.moveY(dt);
+    }
+
+    // Implemented by subclasses
+    takeDamage() {
+
     }
 
     applyGravity(dt: number) {

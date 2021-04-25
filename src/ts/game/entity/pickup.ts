@@ -31,7 +31,6 @@ export class Pickup extends Entity {
             case 3:
                 return Power.DOUBLE_JUMP;
             case 4:
-            case 1:
                 return Power.SHOOT;
         }
         return undefined;

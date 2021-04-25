@@ -6,6 +6,8 @@ import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
+const startSubGame = 3;
+
 export class Game {
 
     allSubGames: SubGame[] = [];
@@ -19,14 +21,14 @@ export class Game {
             this.allSubGames.push(subGame);
         }
 
-        this.subGames.push(this.allSubGames[0]);
+        this.subGames.push(this.allSubGames[startSubGame]);
 
         const container = document.querySelector('.content');
         if (container == null) {
             throw new Error('No content??')
         }
 
-        container.append(this.allSubGames[0].element);
+        container.append(this.activeSubGame.element);
 
 
         this.updateCanvases();
@@ -35,7 +37,7 @@ export class Game {
     get subGameIndexes(): number[] {
         const ret: number[] = [];
 
-        let curIndex: number | undefined = 0;
+        let curIndex: number | undefined = startSubGame;
         while (curIndex != null && curIndex < this.allSubGames.length) {
             ret.push(curIndex);
 
@@ -52,7 +54,8 @@ export class Game {
 
 
     get currentPowers(): Set<Power> {
-        const s = new Set<Power>();
+        // DEBUG: Always have shoot
+        const s = new Set<Power>([Power.SHOOT]);
 
         for (const subGame of this.subGames) {
             const power = subGame.level.player.pickup?.power;
@@ -148,7 +151,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 0; i <= 2; i++) {
+        for (let i = 0; i <= 3; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));

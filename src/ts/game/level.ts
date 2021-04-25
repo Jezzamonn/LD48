@@ -3,6 +3,7 @@ import { lerp } from "../util";
 import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx, toPx, toRoundedPx } from "./constants";
 import { DebugEntity } from "./entity/debug-entity";
 import { Entity } from "./entity/entity";
+import { FlyingEye } from "./entity/flying-eye";
 import { Pickup } from "./entity/pickup";
 import { Player } from "./entity/player";
 import { SubGame } from "./subgame";
@@ -73,6 +74,9 @@ export class Level {
                     const pickup = this.addEntity(Pickup, {x, y});
                     pickup.subGameIndex = b;
                 }
+                else if (colorString == 'ff0000') {
+                    // this.addEntity(FlyingEye, {x, y});
+                }
             }
         }
 
@@ -109,6 +113,7 @@ export class Level {
         }
     }
 
+    // TODO: This should probably save to a separate list instead of directly removing.
     remove(entity: Entity) {
         const index = this.entities.indexOf(entity);
         if (index < 0) {
@@ -142,8 +147,9 @@ export class Level {
             return;
         }
 
-        for (let y = -1; y <= this.height; y++) {
-            for (let x = -1; x <= this.width; x++) {
+        const extraTiles = 8;
+        for (let y = -extraTiles; y <= this.height + extraTiles; y++) {
+            for (let x = -extraTiles; x <= this.width + extraTiles; x++) {
 
                 // A little more efficient.
                 if ((x + 1) * TILE_SIZE < this.subGame.camera.minVisibleX ||
@@ -227,8 +233,11 @@ export class Level {
     }
 
     getTile(tileCoord: Point) {
-        if (tileCoord.x < 0 || tileCoord.x >= this.width || tileCoord.y < 0 || tileCoord.y >= this.height) {
+        if (tileCoord.x < 0 || tileCoord.x >= this.width || tileCoord.y >= this.height) {
             return Tile.GROUND;
+        }
+        if (tileCoord.y < 0) {
+            return Tile.AIR;
         }
 
         return this.tiles[tileCoord.y][tileCoord.x];

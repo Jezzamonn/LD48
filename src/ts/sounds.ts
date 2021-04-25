@@ -31,6 +31,10 @@ class _Sounds {
             audio.oncanplaythrough = () => {
                 this.audios[name].audio = audio;
                 this.audios[name].loaded = true;
+
+                if (name == 'jump') {
+                    audio.volume = 0.3;
+                }
                 resolve();
             }
             audio.onerror = () => {

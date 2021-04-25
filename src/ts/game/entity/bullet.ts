@@ -2,6 +2,7 @@ import { Entity, FacingDir } from "./entity";
 import * as Aseprite from "../../aseprite";
 import { fromPx, toRoundedPx } from "../constants";
 import { Level } from "../level";
+// import { FlyingEye } from "./flying-eye";
 
 Aseprite.loadImage({name: 'bullet', basePath: 'sprites/'});
 
@@ -16,6 +17,23 @@ export class Bullet extends Entity {
 
     updateSpeed() {
         this.dx = 2000 * this.facingDirMult;
+    }
+
+    update(dt: number) {
+        super.update(dt);
+
+        // Then check for collisions
+        for (const ent of this.level.entities.filter(ent => ent.isEnemy)) {
+            if (ent === this) {
+                continue;
+            }
+
+            if (this.isTouchingEntity(ent)) {
+                ent.takeDamage();
+                this.removeFromLevel();
+                // TODO: Play SFX
+            }
+        }
     }
 
     render(context: CanvasRenderingContext2D) {
@@ -33,6 +51,7 @@ export class Bullet extends Entity {
         });
     }
 
+    // TODO: Would be nice to have a particle here.
     onUpCollision() {
         this.removeFromLevel();
     }
