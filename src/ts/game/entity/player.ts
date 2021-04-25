@@ -9,6 +9,7 @@ import { Bullet } from "./bullet";
 import { Sounds } from "../../sounds";
 
 const jumpSpeed = 1550;
+const bigJumpSpeed = 2500;
 const walkSpeed = 600;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
@@ -18,6 +19,7 @@ Sounds.loadSound({name: 'land', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot2', path: 'sfx/'});
 Sounds.loadSound({name: 'explosion', path: 'sfx/'});
+Sounds.loadSound({name: 'hit', path: 'sfx/'});
 
 export class Player extends Entity {
 
@@ -120,7 +122,12 @@ export class Player extends Entity {
     }
 
     jump() {
-        this.dy = -jumpSpeed;
+        if (this.level.subGame.game.currentPowers.has(Power.BIG_JUMP)) {
+            this.dy = -bigJumpSpeed;
+        }
+        else {
+            this.dy = -jumpSpeed;
+        }
         Sounds.playSound('jump');
     }
 

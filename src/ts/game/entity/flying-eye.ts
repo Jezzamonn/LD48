@@ -49,10 +49,8 @@ export class FlyingEye extends Entity {
     }
 
     takeDamage() {
-        // TODO: Hurt SFX
-        // TODO: Hurt VFX
         this.health--;
-        Sounds.playSound('shoot2');
+        Sounds.playSound('hit');
 
         this.hurtCount = this.hurtCountLength;
 

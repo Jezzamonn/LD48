@@ -6,7 +6,7 @@ import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
-const startSubGame = 3;
+const startSubGame = 4;
 
 export class Game {
 
@@ -150,7 +150,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 0; i <= 3; i++) {
+        for (let i = 0; i <= 4; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));

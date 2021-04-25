@@ -17,8 +17,9 @@ export enum Dir {
 
 export enum Power {
     DOUBLE_JUMP = 0,
-    DASH = 1,
-    SHOOT = 2,
+    DASH, // Unsupported at the mo
+    SHOOT,
+    BIG_JUMP,
 }
 
 export function toPx(val: number): number {
