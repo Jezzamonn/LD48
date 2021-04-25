@@ -6,7 +6,7 @@ import { Pickup } from "./pickup";
 import { lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
 
-const jumpSpeed = 1500;
+const jumpSpeed = 1700;
 const walkSpeed = 1000;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
