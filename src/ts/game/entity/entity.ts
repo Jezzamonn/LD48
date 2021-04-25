@@ -1,6 +1,11 @@
 import { Dir, Point, toPx, toRoundedPx } from "../constants";
 import { Level, Tile } from "../level";
 
+export enum FacingDir {
+    LEFT = 0,
+    RIGHT = 1,
+}
+
 export class Entity {
 
     // Up ref to the level
@@ -17,6 +22,9 @@ export class Entity {
     dxDampen: number = 1;
     gravity: number = 5000;
     canColide: boolean = true;
+    // In seconds
+    animCount: number = 0;
+    facingDir = FacingDir.RIGHT;
 
     debugColor?: string = '#f0f';
 
@@ -29,6 +37,8 @@ export class Entity {
     }
 
     update(dt: number) {
+        this.animCount += dt;
+
         this.applyGravity(dt);
         this.dampen();
 

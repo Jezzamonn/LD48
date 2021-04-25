@@ -1,6 +1,6 @@
 import { Keys } from "../../keys";
 import { Level } from "../level";
-import { Entity } from "./entity";
+import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx } from "../constants";
 import { Pickup } from "./pickup";
 import { lerp } from "../../util";
@@ -22,19 +22,24 @@ export class Player extends Entity {
         this.name = 'Player';
         this.w = fromPx(8);
         this.h = fromPx(10);
-        this.debugColor = '#fc9003'
+        this.debugColor = undefined;//'#fc9003'
     }
 
     update(dt: number) {
+        this.animCount += dt;
+
         if (Keys.wasPressedThisFrame('ArrowUp') && !this.midAir) {
             this.dy = -jumpSpeed;
         }
 
+        // TODO: Smoothen this.
         this.dx = 0;
         if (Keys.isPressed('ArrowLeft')) {
+            this.facingDir = FacingDir.LEFT;
             this.dx -= walkSpeed;
         }
         if (Keys.isPressed('ArrowRight')) {
+            this.facingDir = FacingDir.RIGHT;
             this.dx += walkSpeed;
         }
 
@@ -97,10 +102,31 @@ export class Player extends Entity {
     render(context: CanvasRenderingContext2D) {
         super.render(context);
 
-        Aseprite.drawSprite({
+        // Just figure out the animation based on what's happening?
+        let animName = 'idle';
+        if (this.midAir) {
+            const jumpAnimSwitch = 400;
+            if (this.dy < -jumpAnimSwitch) {
+                animName = 'jump-up'
+            }
+            else if (this.dy > jumpAnimSwitch) {
+                animName = 'jump-down'
+            }
+            else {
+                animName = 'jump-mid'
+            }
+        }
+        else {
+            if (Math.abs(this.dx) > 100) {
+                animName = 'run';
+            }
+        }
+
+        Aseprite.drawAnimation({
             context,
             image: "character",
-            frame: 0,
+            animationName: animName,
+            time: this.animCount,
             position: {
                 x: toRoundedPx(this.midX),
                 y: toRoundedPx(this.maxY),
@@ -108,7 +134,8 @@ export class Player extends Entity {
             anchorRatios: {
                 x: 0.5,
                 y: 1,
-            }
+            },
+            flipped: this.facingDir == FacingDir.LEFT,
         });
 
         this.pickup?.render(context);

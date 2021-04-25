@@ -1,12 +1,12 @@
 import { seededRandom } from "../util";
 
 export const PX_SCALE = 8;
-export const PX_SCREEN_WIDTH = 320;
-export const PX_SCREEN_HEIGHT = 240;
+export const PX_SCREEN_WIDTH = 320 / 2;
+export const PX_SCREEN_HEIGHT = 240 / 2;
 export const SCREEN_WIDTH = fromPx(PX_SCREEN_WIDTH);
 export const SCREEN_HEIGHT = fromPx(PX_SCREEN_HEIGHT);
 
-export const CANVAS_SCALE = 2;
+export const CANVAS_SCALE = 4;
 
 export enum Dir {
     LEFT = 0,

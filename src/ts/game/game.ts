@@ -9,7 +9,7 @@ export class Game {
     activeSubGameIndex = 0;
 
     constructor() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) {
             const subGame = new SubGame(this, i);
             subGame.level = new Level(subGame);
             this.allSubGames.push(subGame);
@@ -24,7 +24,7 @@ export class Game {
         const ret: number[] = [];
 
         let curIndex: number | undefined = 0;
-        while (curIndex != null) {
+        while (curIndex != null && curIndex < this.allSubGames.length) {
             ret.push(curIndex);
 
             const subGame: SubGame = this.allSubGames[curIndex];
@@ -34,7 +34,8 @@ export class Game {
     }
 
     get subGames() {
-        return this.subGameIndexes.map(ix => this.allSubGames[ix]);
+        return this.subGameIndexes
+            .map(ix => this.allSubGames[ix]);
     }
 
     updateCanvases() {

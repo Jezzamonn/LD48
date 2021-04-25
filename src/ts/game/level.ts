@@ -1,3 +1,4 @@
+import * as Images from "../images";
 import { lerp } from "../util";
 import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx, toPx, toRoundedPx } from "./constants";
 import { DebugEntity } from "./entity/debug-entity";
@@ -6,7 +7,9 @@ import { Pickup } from "./entity/pickup";
 import { Player } from "./entity/player";
 import { SubGame } from "./subgame";
 
-export const TILE_SIZE = fromPx(16);
+Images.loadImage({name: 'tiles', path: 'sprites/'});
+
+export const TILE_SIZE = fromPx(12);
 
 const DEBUG_GROUND_COLOR = '#21235e';
 
@@ -85,7 +88,7 @@ export class Level {
 
         context.save();
         context.resetTransform();
-        context.fillStyle = '#f7f3cb';
+        context.fillStyle = '#2ce8f5';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.restore();
 
@@ -99,20 +102,35 @@ export class Level {
     }
 
     renderTiles(context:CanvasRenderingContext2D) {
-        for (let y = 0; y < this.tiles.length; y++) {
-            for (let x = 0; x < this.tiles[0].length; x++) {
-                const tile = this.tiles[y][x];
+        for (let y = -1; y <= this.height; y++) {
+            for (let x = -1; x <= this.width; x++) {
+                const tile = this.getTile({x, y});
 
                 if (tile == Tile.GROUND) {
-                    context.fillStyle = DEBUG_GROUND_COLOR;
-                    context.fillRect(
-                        toRoundedPx(x * TILE_SIZE),
-                        toRoundedPx(y * TILE_SIZE),
-                        toPx(TILE_SIZE),
-                        toPx(TILE_SIZE),
-                    );
-                }
+                    // context.fillStyle = DEBUG_GROUND_COLOR;
+                    // context.fillRect(
+                    //     toRoundedPx(x * TILE_SIZE),
+                    //     toRoundedPx(y * TILE_SIZE),
+                    //     toPx(TILE_SIZE),
+                    //     toPx(TILE_SIZE),
+                    // );
+                    if (!Images.images['tiles'].loaded || Images.images['tiles'].image == null) {
+                        continue;
+                    }
 
+                    context.drawImage(
+                        Images.images['tiles'].image,
+                        0,
+                        0,
+                        16,
+                        16,
+                        toRoundedPx(x * TILE_SIZE) - 2,
+                        toRoundedPx(y * TILE_SIZE) - 2,
+                        16,
+                        16,
+                    )
+
+                }
             }
         }
     }
@@ -152,16 +170,20 @@ export class Level {
         return tileValue == type;
     }
 
-    getTileFromCoord(coord: Point) {
-        const tileCoord = {
-            x: Math.floor(coord.x / TILE_SIZE),
-            y: Math.floor(coord.y / TILE_SIZE),
-        }
+    getTile(tileCoord: Point) {
         if (tileCoord.x < 0 || tileCoord.x >= this.width || tileCoord.y < 0 || tileCoord.y >= this.height) {
             return Tile.GROUND;
         }
 
         return this.tiles[tileCoord.y][tileCoord.x];
+    };
+
+    getTileFromCoord(coord: Point) {
+        const tileCoord = {
+            x: Math.floor(coord.x / TILE_SIZE),
+            y: Math.floor(coord.y / TILE_SIZE),
+        }
+        return this.getTile(tileCoord);
     }
 
     getTilePosFromCoord(coord: {x?: number, y?: number}, tilePos: {x?: number, y?: number}): number {
