@@ -54,8 +54,7 @@ export class Game {
 
 
     get currentPowers(): Set<Power> {
-        // DEBUG: Always have shoot
-        const s = new Set<Power>([Power.SHOOT]);
+        const s = new Set<Power>();
 
         for (const subGame of this.subGames) {
             const power = subGame.level.player.pickup?.power;
