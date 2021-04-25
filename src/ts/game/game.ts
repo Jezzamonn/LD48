@@ -61,7 +61,7 @@ export class Game {
             container.removeChild(container.lastChild!);
         }
         for (const subGame of this.subGames) {
-            container.append(subGame.canvas);
+            container.append(subGame.element);
         }
 
         // Also render each thingo
@@ -112,6 +112,7 @@ export class Game {
         for (let i = 0; i <= 2; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
+        promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));
         return Promise.all(promises);
     }
 }

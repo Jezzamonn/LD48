@@ -12,11 +12,9 @@ interface ImageInfo {
  * Asynchronously fetches an image.
  */
 export function loadImage({name, path} : {name: string, path: string}) {
-    const promise = new Promise<void>((resolve) => {
+    const promise = new Promise<void>((resolve, reject) => {
         if (images.hasOwnProperty(name)) {
-            console.log(`Already loaded image ${name}.`);
-
-            return images[name].loadPromise;
+            throw new Error(`Already loaded image ${name}.`);
         }
 
         if (!path.endsWith('/')) {

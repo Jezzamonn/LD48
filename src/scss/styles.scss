@@ -11,11 +11,24 @@ html, body {
     align-items: center;
 }
 
+.subgame {
+    position: relative;
+}
+
 .canvas {
-    border: solid 1px;
+    position: absolute;
     // Clean pixel art, please.
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+}
+
+.frame {
+    position: absolute;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: 1;
 }
