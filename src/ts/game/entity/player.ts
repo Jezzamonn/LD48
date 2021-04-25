@@ -214,4 +214,9 @@ export class Player extends Entity {
 
         Sounds.playSound('land');
     }
+
+    takeDamage() {
+        // Wowo!
+        this.level.reset();
+    }
 }

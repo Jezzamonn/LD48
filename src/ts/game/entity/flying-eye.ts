@@ -29,6 +29,10 @@ export class FlyingEye extends Entity {
         if (this.hurtCount > 0) {
             this.hurtCount -= dt;
         }
+
+        if (this.isTouchingEntity(this.level.player, -1)) {
+            this.level.player.takeDamage();
+        }
     }
 
     render(context: CanvasRenderingContext2D) {

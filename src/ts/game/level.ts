@@ -21,6 +21,7 @@ export enum Tile {
 
 export class Level {
 
+    levelImage: HTMLImageElement;
     subGame: SubGame;
     player!: Player;
     entities: Entity[] = [];
@@ -28,6 +29,7 @@ export class Level {
 
     constructor(subGame: SubGame, levelImage: HTMLImageElement) {
         this.subGame = subGame;
+        this.levelImage = levelImage;
 
         this.initFromImage(levelImage);
     }
@@ -262,5 +264,9 @@ export class Level {
             return tileY * TILE_SIZE + tilePos.y * (TILE_SIZE - 1);
         }
         throw 'You did it wrong you dangus';
+    }
+
+    reset() {
+        this.subGame.level = new Level(this.subGame, this.levelImage);
     }
 }
