@@ -21,7 +21,7 @@ export class Player extends Entity {
 
         this.name = 'Player';
         this.w = fromPx(8);
-        this.h = fromPx(10);
+        this.h = fromPx(12);
         this.debugColor = undefined;//'#fc9003'
     }
 

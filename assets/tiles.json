@@ -1,0 +1,22 @@
+{ "frames": [
+   {
+    "filename": "tiles.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 160, "h": 160 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 160, "h": 160 },
+    "sourceSize": { "w": 160, "h": 160 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "tiles.png",
+  "format": "RGBA8888",
+  "size": { "w": 162, "h": 162 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}

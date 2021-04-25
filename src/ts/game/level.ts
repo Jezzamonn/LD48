@@ -102,6 +102,10 @@ export class Level {
     }
 
     renderTiles(context:CanvasRenderingContext2D) {
+        if (!Images.images['tiles'].loaded || Images.images['tiles'].image == null) {
+            return;
+        }
+
         for (let y = -1; y <= this.height; y++) {
             for (let x = -1; x <= this.width; x++) {
                 const tile = this.getTile({x, y});
@@ -114,25 +118,32 @@ export class Level {
                     //     toPx(TILE_SIZE),
                     //     toPx(TILE_SIZE),
                     // );
-                    if (!Images.images['tiles'].loaded || Images.images['tiles'].image == null) {
+                    const tileAbove = this.getTile({x, y: y-1});
+
+                    if (tileAbove == Tile.GROUND) {
+                        this.renderTile(context, {x, y}, {x: 1, y: 0});
                         continue;
                     }
 
-                    context.drawImage(
-                        Images.images['tiles'].image,
-                        0,
-                        0,
-                        16,
-                        16,
-                        toRoundedPx(x * TILE_SIZE) - 2,
-                        toRoundedPx(y * TILE_SIZE) - 2,
-                        16,
-                        16,
-                    )
+                    this.renderTile(context, {x, y}, {x: 0, y: 0});
 
                 }
             }
         }
+    }
+
+    renderTile(context: CanvasRenderingContext2D, renderPos: Point, tileGraphicPos: Point) {
+        context.drawImage(
+            Images.images['tiles'].image!,
+            tileGraphicPos.x * 16,
+            tileGraphicPos.y * 16,
+            16,
+            16,
+            toRoundedPx(renderPos.x * TILE_SIZE) - 3,
+            toRoundedPx(renderPos.y * TILE_SIZE) - 3,
+            16,
+            16,
+        )
     }
 
     renderFrame(context: CanvasRenderingContext2D) {
