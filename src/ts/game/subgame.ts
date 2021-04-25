@@ -2,6 +2,7 @@ import { Camera } from "./camera/camera";
 import { CANVAS_SCALE, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH } from "./constants";
 import { Game } from "./game";
 import { Level } from "./level";
+import * as Aseprite from "../aseprite";
 
 export class SubGame {
 
@@ -25,6 +26,7 @@ export class SubGame {
         this.canvas.classList.add('canvas');
 
         this.context = this.canvas.getContext('2d')!;
+        Aseprite.disableSmoothing(this.context);
 
         this.camera.getTargetPosition = () => ({
             x: this.level.player.midX,

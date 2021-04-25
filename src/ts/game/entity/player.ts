@@ -1,12 +1,15 @@
 import { Keys } from "../../keys";
 import { Level } from "../level";
 import { Entity } from "./entity";
-import { fromPx, rng } from "../constants";
+import { fromPx, rng, toRoundedPx } from "../constants";
 import { Pickup } from "./pickup";
 import { lerp } from "../../util";
+import * as Aseprite from "../../aseprite";
 
 const jumpSpeed = 1500;
 const walkSpeed = 1000;
+
+Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
 export class Player extends Entity {
 
@@ -93,6 +96,20 @@ export class Player extends Entity {
 
     render(context: CanvasRenderingContext2D) {
         super.render(context);
+
+        Aseprite.drawSprite({
+            context,
+            image: "character",
+            frame: 0,
+            position: {
+                x: toRoundedPx(this.midX),
+                y: toRoundedPx(this.maxY),
+            },
+            anchorRatios: {
+                x: 0.5,
+                y: 1,
+            }
+        });
 
         this.pickup?.render(context);
     }

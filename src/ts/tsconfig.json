@@ -5,5 +5,7 @@
         "target": "es2020",
         "noImplicitAny": true,
         "strictNullChecks": true,
+        "allowJs": true,
+        "outDir": "./dist",
     },
 }
