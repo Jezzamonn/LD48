@@ -6,7 +6,7 @@ import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
-const startSubGame = 4;
+const startSubGame = 5;
 
 export class Game {
 
@@ -54,7 +54,7 @@ export class Game {
 
 
     get currentPowers(): Set<Power> {
-        const s = new Set<Power>([Power.SHOOT]);
+        const s = new Set<Power>();
 
         for (const subGame of this.subGames) {
             const power = subGame.level.player.pickup?.power;
@@ -150,7 +150,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 0; i <= 4; i++) {
+        for (let i = 0; i <= 6; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));

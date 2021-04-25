@@ -77,7 +77,7 @@ export class Level {
                     pickup.subGameIndex = b;
                 }
                 else if (colorString == 'ff0000') {
-                    this.addEntity(FlyingEye, {x, y});
+                    this.addEntity(FlyingEye, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
                 }
             }
         }
@@ -87,10 +87,10 @@ export class Level {
         }
     }
 
-    addEntity<T extends Entity>(clazz: new (...args: any[]) => T, tilePos:Point): T {
+    addEntity<T extends Entity>(clazz: new (...args: any[]) => T, tileCoord:Point, {tilePos = {x: 0.5, y: 1}}: {tilePos?: Point} = {}): T {
         const ent: T = new clazz(this);
-        ent.midX = tilePos.x * TILE_SIZE + 0.5 * (TILE_SIZE - 1);
-        ent.maxY = tilePos.y * TILE_SIZE + (TILE_SIZE - 1);
+        ent.midX = tileCoord.x * TILE_SIZE + tilePos.x * (TILE_SIZE - 1);
+        ent.maxY = tileCoord.y * TILE_SIZE + tilePos.y * (TILE_SIZE - 1);
         this.entities.push(ent);
 
         return ent;
