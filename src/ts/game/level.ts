@@ -62,7 +62,6 @@ export class Level {
                     .join('');
                 const b = colorArray.data[2];
 
-                console.log(colorString);
                 if (colorString == '000000') {
                     this.tiles[y][x] = Tile.GROUND;
                 }

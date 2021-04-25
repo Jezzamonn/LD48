@@ -1,5 +1,5 @@
 import { Camera } from "./camera/camera";
-import { CANVAS_SCALE, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH } from "./constants";
+import { CANVAS_SCALE, fromPx, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT } from "./constants";
 import { Game } from "./game";
 import { Level } from "./level";
 import * as Aseprite from "../aseprite";
@@ -29,8 +29,8 @@ export class SubGame {
         Aseprite.disableSmoothing(this.context);
 
         this.camera.getTargetPosition = () => ({
-            x: this.level.player.midX,
-            y: this.level.player.midY,
+            x: this.level.player.midX + this.level.player.facingDirMult * fromPx(20),
+            y: this.level.player.midY - Math.round(0.15 * SCREEN_HEIGHT),
         });
     }
 

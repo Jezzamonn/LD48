@@ -199,6 +199,10 @@ export class Entity {
         this.level.remove(this);
     }
 
+    get facingDirMult() {
+        return this.facingDir == FacingDir.RIGHT ? 1 : -1;
+    }
+
     //#region Getters and setter and junk.
     get minX() {
         return this.x;

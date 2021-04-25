@@ -64,8 +64,7 @@ export class Player extends Entity {
         }
 
         if (this.pickup != null) {
-            const facingDirMult = this.facingDir == FacingDir.RIGHT ? 1 : -1;
-            this.pickup.midX = this.midX + facingDirMult * fromPx(6);
+            this.pickup.midX = this.midX + this.facingDirMult * fromPx(6);
             this.pickup.midY = this.midY + fromPx(2);
         }
 
