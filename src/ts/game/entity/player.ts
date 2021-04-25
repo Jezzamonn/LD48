@@ -15,6 +15,7 @@ Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
 Sounds.loadSound({name: 'jump', path: 'sfx/'});
 Sounds.loadSound({name: 'land', path: 'sfx/'});
+Sounds.loadSound({name: 'shoot2', path: 'sfx/'});
 
 export class Player extends Entity {
 
@@ -23,7 +24,7 @@ export class Player extends Entity {
     midAir = true;
     pickup?: Pickup;
     crouching = false;
-    shootCooldownTime = 0.2;
+    shootCooldownTime = 0.15;
     shootCooldown = 0;
 
     constructor(level: Level) {
@@ -118,11 +119,12 @@ export class Player extends Entity {
 
     jump() {
         this.dy = -jumpSpeed;
-        Sounds.audios['jump'].audio?.play();
+        Sounds.playSound('jump');
     }
 
     fire() {
-        console.log('pew');
+        Sounds.playSound('shoot2');
+
         const bullet = new Bullet(this.level);
         bullet.midX = this.pickupX;
         bullet.midY = this.pickupY;
@@ -209,6 +211,6 @@ export class Player extends Entity {
 
         this.midAir = false;
 
-        Sounds.audios['land'].audio?.play();
+        Sounds.playSound('land');
     }
 }

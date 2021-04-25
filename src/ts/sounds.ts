@@ -31,10 +31,6 @@ class _Sounds {
             audio.oncanplaythrough = () => {
                 this.audios[name].audio = audio;
                 this.audios[name].loaded = true;
-
-                if (name == 'jump') {
-                    audio.volume = 0.3;
-                }
                 resolve();
             }
             audio.onerror = () => {
@@ -43,6 +39,17 @@ class _Sounds {
             audio.src = audioPath;
         });
         return promise;
+    }
+
+    playSound(name: string) {
+        const audio = (this.audios[name].audio?.cloneNode() as HTMLAudioElement);
+        if (name == 'jump') {
+            audio.volume = 0.3;
+        }
+        if (name == 'shoot2') {
+            audio.volume = 0.1;
+        }
+        audio.play();
     }
 }
 
