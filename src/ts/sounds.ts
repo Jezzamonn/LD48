@@ -43,6 +43,9 @@ class _Sounds {
 
     playSound(name: string) {
         const audio = (this.audios[name].audio?.cloneNode() as HTMLAudioElement);
+        if (audio == null) {
+            return;
+        }
         if (name == 'jump') {
             audio.volume = 0.3;
         }
