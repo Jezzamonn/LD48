@@ -1,4 +1,4 @@
-import { Entity } from "./entity";
+import { Entity, FacingDir } from "./entity";
 import { fromPx, toRoundedPx } from "../constants";
 import { Level } from "../level";
 import * as Aseprite from "../../aseprite";
@@ -33,6 +33,8 @@ export class FlyingEye extends Entity {
         if (this.isTouchingEntity(this.level.player, fromPx(-2))) {
             this.level.player.takeDamage();
         }
+
+        this.facingDir = this.level.player.midX > this.midX ? FacingDir.RIGHT : FacingDir.LEFT;
     }
 
     render(context: CanvasRenderingContext2D) {
@@ -45,6 +47,7 @@ export class FlyingEye extends Entity {
                 x: toRoundedPx(this.x),
                 y: toRoundedPx(this.y)
             },
+            flipped: this.facingDir == FacingDir.RIGHT,
         });
     }
 
