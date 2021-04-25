@@ -19,8 +19,8 @@ export class Entity {
     h: number = 0;
     dx: number = 0;
     dy: number = 0;
-    dxDampen: number = 1;
-    gravity: number = 5000;
+    dxDampen: number = 0;
+    gravity: number = 4000;
     canColide: boolean = true;
     // In seconds
     animCount: number = 0;
@@ -40,7 +40,7 @@ export class Entity {
         this.animCount += dt;
 
         this.applyGravity(dt);
-        this.dampen();
+        this.dampen(dt);
 
         this.moveX(dt);
         this.moveY(dt);
@@ -50,8 +50,17 @@ export class Entity {
         this.dy += this.gravity * dt;
     }
 
-    dampen() {
-        this.dx *= this.dxDampen;
+    dampen(dt: number) {
+        const dampAmt = this.dxDampen * dt;
+        if (this.dx > dampAmt) {
+            this.dx -= dampAmt;
+        }
+        else if (this.dx < -dampAmt) {
+            this.dx += dampAmt;
+        }
+        else {
+            this.dx = 0;
+        }
     }
 
     moveX(dt: number) {
@@ -186,12 +195,12 @@ export class Entity {
         return coords.every(coord => this.level.coordIsTouching(coord, tile));
     }
 
-    isTouchingEntity(ent: Entity) {
+    isTouchingEntity(ent: Entity, leniency: number = 0) {
         return (
-            (ent.maxX > this.minX) &&
-            (this.maxX > ent.minX) &&
-            (ent.maxY > this.minY) &&
-            (this.maxY > ent.minY)
+            (ent.maxX  + leniency > this.minX) &&
+            (this.maxX + leniency > ent.minX) &&
+            (ent.maxY  + leniency > this.minY) &&
+            (this.maxY + leniency > ent.minY)
         );
     }
 

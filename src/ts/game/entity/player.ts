@@ -2,12 +2,13 @@ import { Keys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx } from "../constants";
-import { Pickup } from "./pickup";
+import { Pickup, Power } from "./pickup";
 import { lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
+import { Bullet } from "./bullet";
 
-const jumpSpeed = 1700;
-const walkSpeed = 1000;
+const jumpSpeed = 1550;
+const walkSpeed = 600;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
@@ -17,6 +18,9 @@ export class Player extends Entity {
     midAirJumpsLeft = 1;
     midAir = true;
     pickup?: Pickup;
+    crouching = false;
+    shootCooldownTime = 0.2;
+    shootCooldown = 0;
 
     constructor(level: Level) {
         super(level);
@@ -25,47 +29,73 @@ export class Player extends Entity {
         this.w = fromPx(8);
         this.h = fromPx(12);
         this.debugColor = undefined;//'#fc9003'
+
+        this.dxDampen = 10000;
+    }
+
+    get pickupX() {
+        return this.midX + this.facingDirMult * fromPx(6);
+    }
+
+    get pickupY() {
+        return this.midY + fromPx(2);
     }
 
     update(dt: number) {
         this.animCount += dt;
+
+        if (this.shootCooldown > 0) {
+            this.shootCooldown -= dt;
+        }
 
         if (Keys.wasPressedThisFrame('ArrowUp')) {
             if (!this.midAir) {
                 this.jump();
                 this.midAirJumpsLeft = this.midAirJumps;
             }
-            else if (this.midAirJumpsLeft > 0) {
+            else if (this.midAirJumpsLeft > 0 && this.level.subGame.game.currentPowers.has(Power.DOUBLE_JUMP)) {
                 this.jump();
                 this.midAirJumpsLeft--;
             }
         }
 
+        this.crouching = Keys.isPressed('ArrowDown');
+
         // TODO: Smoothen this.
-        this.dx = 0;
-        if (Keys.isPressed('ArrowLeft')) {
-            this.facingDir = FacingDir.LEFT;
-            this.dx -= walkSpeed;
-        }
-        if (Keys.isPressed('ArrowRight')) {
-            this.facingDir = FacingDir.RIGHT;
-            this.dx += walkSpeed;
-        }
-
-        if (Keys.wasPressedThisFrame('KeyX')) {
-            console.log('Picked up?');
-
-            if (this.pickup == null) {
-                this.checkForPickup();
+        this.dampen(dt);
+        if (!this.crouching) {
+            if (Keys.isPressed('ArrowLeft')) {
+                this.facingDir = FacingDir.LEFT;
+                this.dx = -walkSpeed;
             }
-            else {
-                this.dropPickup();
+            if (Keys.isPressed('ArrowRight')) {
+                this.facingDir = FacingDir.RIGHT;
+                this.dx = walkSpeed;
+            }
+        }
+
+        if (this.crouching && !this.midAir) {
+            if (Keys.wasPressedThisFrame('KeyX')) {
+                if (this.pickup == null) {
+                    this.checkForPickup();
+                }
+                else {
+                    this.dropPickup();
+                }
+            }
+        }
+        else {
+            if (this.level.subGame.game.currentPowers.has(Power.SHOOT) &&
+                Keys.isPressed('KeyX') &&
+                this.shootCooldown <= 0) {
+
+                this.fire();
             }
         }
 
         if (this.pickup != null) {
-            this.pickup.midX = this.midX + this.facingDirMult * fromPx(6);
-            this.pickup.midY = this.midY + fromPx(2);
+            this.pickup.midX = this.pickupX;
+            this.pickup.midY = this.pickupY;
         }
 
 
@@ -86,9 +116,21 @@ export class Player extends Entity {
         this.dy = -jumpSpeed;
     }
 
+    fire() {
+        console.log('pew');
+        const bullet = new Bullet(this.level);
+        bullet.midX = this.pickupX;
+        bullet.midY = this.pickupY;
+        bullet.facingDir = this.facingDir;
+        bullet.updateSpeed();
+        this.level.entities.push(bullet);
+
+        this.shootCooldown = this.shootCooldownTime;
+    }
+
     checkForPickup() {
-        for (const pickup of this.level.entities.filter(ent => ent instanceof Pickup)) {
-            if (this.isTouchingEntity(pickup)) {
+        for (const pickup of this.level.entitiesOfType(Pickup)) {
+            if (this.isTouchingEntity(pickup, 2)) {
                 pickup.removeFromLevel();
                 this.pickup = pickup;
                 this.level.subGame.game.updateCanvases();
@@ -129,8 +171,11 @@ export class Player extends Entity {
                 animName = 'jump-mid'
             }
         }
+        else if (this.crouching) {
+            animName = 'crouch';
+        }
         else {
-            if (Math.abs(this.dx) > 100) {
+            if (Keys.isPressed('ArrowLeft') || Keys.isPressed('ArrowRight')) {
                 animName = 'run';
             }
         }

@@ -90,6 +90,11 @@ export class Level {
         return ent;
     }
 
+
+    entitiesOfType<T extends Entity>(clazz: new (...args: any[]) => T): T[] {
+        return this.entities.filter(ent => ent instanceof clazz) as T[];
+    }
+
     get width() {
         return this.tiles[0].length;
     }

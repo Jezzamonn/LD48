@@ -5,6 +5,12 @@ import * as Aseprite from "../../aseprite";
 
 Aseprite.loadImage({name: 'gameboy', basePath: 'sprites/'});
 
+export enum Power {
+    DOUBLE_JUMP = 0,
+    DASH = 1,
+    SHOOT = 2,
+}
+
 export class Pickup extends Entity {
 
     subGameIndex?: number;
@@ -17,7 +23,18 @@ export class Pickup extends Entity {
         this.h = fromPx(7);
         this.debugColor = '#387eff';
 
-        this.dxDampen = 0.93;
+        this.dxDampen = 1000;
+    }
+
+    get power(): Power | undefined {
+        switch (this.subGameIndex) {
+            case 3:
+                return Power.DOUBLE_JUMP;
+            case 4:
+            case 1:
+                return Power.SHOOT;
+        }
+        return undefined;
     }
 
     render(context: CanvasRenderingContext2D) {

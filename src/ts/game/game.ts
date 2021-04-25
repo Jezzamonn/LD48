@@ -1,5 +1,6 @@
 import * as Images from "../images";
 import { Keys } from "../keys";
+import { Power } from "./entity/pickup";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
@@ -10,9 +11,9 @@ export class Game {
     activeSubGameIndex = 0;
 
     constructor() {
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; Images.images[`level${i}`] != undefined; i++) {
             const subGame = new SubGame(this, i);
-            subGame.level = new Level(subGame, Images.images[`level${i+1}`].image!);
+            subGame.level = new Level(subGame, Images.images[`level${i}`].image!);
             this.allSubGames.push(subGame);
         }
 
@@ -37,6 +38,21 @@ export class Game {
     get subGames() {
         return this.subGameIndexes
             .map(ix => this.allSubGames[ix]);
+    }
+
+
+    get currentPowers(): Set<Power> {
+        const s = new Set<Power>();
+
+        for (const subGame of this.subGames) {
+            const power = subGame.level.player.pickup?.power;
+            if (power == null) {
+                continue;
+            }
+            s.add(power);
+        };
+
+        return s;
     }
 
     updateCanvases() {
@@ -93,7 +109,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 0; i <= 2; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         return Promise.all(promises);

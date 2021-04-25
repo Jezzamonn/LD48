@@ -8,8 +8,10 @@ class _Keys {
     setUp() {
         // Thought: Should this be adding to a number rather than triggering a boolean? Eh.
         document.addEventListener('keydown', (evt) => {
+            if (!this.#pressedKeys.has(evt.code)) {
+                this.#pressedThisFrame.add(evt.code);
+            }
             this.#pressedKeys.add(evt.code);
-            this.#pressedThisFrame.add(evt.code);
 
             // Also disable scrolling
             if (disableDefaultKeys.has(evt.code)) {
