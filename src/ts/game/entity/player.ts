@@ -13,6 +13,8 @@ Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
 export class Player extends Entity {
 
+    midAirJumps = 1;
+    midAirJumpsLeft = 1;
     midAir = true;
     pickup?: Pickup;
 
@@ -28,8 +30,15 @@ export class Player extends Entity {
     update(dt: number) {
         this.animCount += dt;
 
-        if (Keys.wasPressedThisFrame('ArrowUp') && !this.midAir) {
-            this.dy = -jumpSpeed;
+        if (Keys.wasPressedThisFrame('ArrowUp')) {
+            if (!this.midAir) {
+                this.jump();
+                this.midAirJumpsLeft = this.midAirJumps;
+            }
+            else if (this.midAirJumpsLeft > 0) {
+                this.jump();
+                this.midAirJumpsLeft--;
+            }
         }
 
         // TODO: Smoothen this.
@@ -55,8 +64,9 @@ export class Player extends Entity {
         }
 
         if (this.pickup != null) {
-            this.pickup.midX = this.midX;
-            this.pickup.midY = this.midY;
+            const facingDirMult = this.facingDir == FacingDir.RIGHT ? 1 : -1;
+            this.pickup.midX = this.midX + facingDirMult * fromPx(6);
+            this.pickup.midY = this.midY + fromPx(2);
         }
 
 
@@ -71,6 +81,10 @@ export class Player extends Entity {
 
         this.moveX(dt);
         this.moveY(dt);
+    }
+
+    jump() {
+        this.dy = -jumpSpeed;
     }
 
     checkForPickup() {

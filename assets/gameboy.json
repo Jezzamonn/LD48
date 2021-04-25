@@ -1,0 +1,22 @@
+{ "frames": [
+   {
+    "filename": "gameboy.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "gameboy.png",
+  "format": "RGBA8888",
+  "size": { "w": 7, "h": 9 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}
