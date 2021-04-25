@@ -30,8 +30,8 @@
  * @property {boolean} jsonLoaded - Whether the json metadata has been loaded.
  * @property {boolean} loaded - Whether the image and json have been loaded.
  * @property {?HTMLImageElement} image - The image, once it has been loaded.
- * @property {?FrameMetadata} frames - Metadata for each frame.
- * @property {?AnimationMetadata} animations - Metadata for each labeled
+ * @property {?FrameMetadata[]} frames - Metadata for each frame.
+ * @property {?Object<string, !AnimationMetadata>} animations - Metadata for each labeled
  *     animation.
  */
 

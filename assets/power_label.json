@@ -1,0 +1,43 @@
+{ "frames": [
+   {
+    "filename": "power_label 0.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 58, "h": 23 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 23 },
+    "sourceSize": { "w": 58, "h": 23 },
+    "duration": 100
+   },
+   {
+    "filename": "power_label 1.aseprite",
+    "frame": { "x": 60, "y": 1, "w": 58, "h": 23 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 23 },
+    "sourceSize": { "w": 58, "h": 23 },
+    "duration": 100
+   },
+   {
+    "filename": "power_label 2.aseprite",
+    "frame": { "x": 1, "y": 25, "w": 58, "h": 23 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 58, "h": 23 },
+    "sourceSize": { "w": 58, "h": 23 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "power_label.png",
+  "format": "RGBA8888",
+  "size": { "w": 119, "h": 49 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "double jump", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "shoot", "from": 1, "to": 1, "direction": "forward" },
+   { "name": "big jump", "from": 2, "to": 2, "direction": "forward" }
+  ]
+ }
+}

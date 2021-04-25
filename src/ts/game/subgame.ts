@@ -1,9 +1,13 @@
 import { Camera } from "./camera/camera";
-import { CANVAS_SCALE, fromPx, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH } from "./constants";
+import { CANVAS_SCALE, fromPx, Power, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH } from "./constants";
 import { Game } from "./game";
 import { Level } from "./level";
 import * as Aseprite from "../aseprite";
 import * as Images from "../images";
+import { Keys } from "../keys";
+
+Aseprite.loadImage({name: 'title', basePath: 'sprites/'});
+Aseprite.loadImage({name: 'power_label', basePath: 'sprites/'});
 
 export class SubGame {
 
@@ -16,6 +20,7 @@ export class SubGame {
     game: Game;
     level!: Level;
     camera: Camera = new Camera();
+    showingTitle = true;
 
     constructor(game: Game, index: number) {
         this.game = game;
@@ -69,6 +74,13 @@ export class SubGame {
     }
 
     update(dt: number) {
+        if (this.showingTitle) {
+            if (Keys.wasPressedThisFrame('KeyX') || Keys.wasPressedThisFrame('Space')) {
+                this.showingTitle = false;
+            }
+            return;
+        }
+
         this.level.update(dt);
 
         this.camera.update(dt);
@@ -76,9 +88,52 @@ export class SubGame {
 
     render() {
         this.context.resetTransform();
+        this.context.filter = `hue-rotate(${60 * this.index}deg)`
+
+        if (this.showingTitle) {
+            this.renderTitle(this.context);
+            return;
+        }
 
         this.camera.applyToContext(this.context);
 
         this.level.render(this.context);
+
+        this.context.resetTransform();
+        this.renderPower(this.context);
+    }
+
+    renderPower(context: CanvasRenderingContext2D) {
+        const powerNameMap: {[key: string]: string} = {};
+        powerNameMap[Power.DOUBLE_JUMP] = 'double jump';
+        powerNameMap[Power.SHOOT] = 'shoot';
+        powerNameMap[Power.BIG_JUMP] = 'big jump';
+
+        for (const power of this.game.currentPowers) {
+            Aseprite.drawAnimation({
+                context,
+                image: 'power_label',
+                animationName: powerNameMap[power],
+                time: 0,
+                position: {x: PX_SCREEN_WIDTH, y: 0},
+                anchorRatios: {x: 1, y: 0},
+            });
+        }
+    }
+
+    renderTitle(context: CanvasRenderingContext2D) {
+        let titleName = `game${this.index+1}`;
+        const imageData = Aseprite.images['title'];
+        if (!imageData.animations?.hasOwnProperty(titleName)) {
+            titleName = 'game?';
+        }
+
+        Aseprite.drawAnimation({
+            context,
+            image: 'title',
+            animationName: titleName,
+            time: 0,
+            position: {x: 0, y: 0}
+        });
     }
 }
