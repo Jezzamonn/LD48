@@ -30,6 +30,7 @@ export class Entity {
 
     isEnemy: boolean = false;
     health = 1
+    lifeTime?: number;
 
     constructor(level: Level) {
         this.level = level;
@@ -41,6 +42,14 @@ export class Entity {
 
     update(dt: number) {
         this.animCount += dt;
+
+        if (this.lifeTime != null) {
+            this.lifeTime -= dt;
+            if (this.lifeTime < 0) {
+                this.removeFromLevel();
+                return;
+            }
+        }
 
         this.applyGravity(dt);
         this.dampen(dt);

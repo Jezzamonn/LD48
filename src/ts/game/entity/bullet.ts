@@ -13,6 +13,8 @@ export class Bullet extends Entity {
         this.h = fromPx(7);
         this.gravity = 0;
         this.debugColor = '#387eff';
+
+        this.lifeTime = 0.4;
     }
 
     updateSpeed() {
