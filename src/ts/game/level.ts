@@ -1,6 +1,7 @@
 import * as Images from "../images";
 import { lerp } from "../util";
 import { Point, rng, SCREEN_HEIGHT, SCREEN_WIDTH, fromPx, toPx, toRoundedPx } from "./constants";
+import { Boss } from "./entity/boss";
 import { DebugEntity } from "./entity/debug-entity";
 import { Entity } from "./entity/entity";
 import { FlyingEye } from "./entity/flying-eye";
@@ -78,6 +79,9 @@ export class Level {
                 }
                 else if (colorString == 'ff0000') {
                     this.addEntity(FlyingEye, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
+                }
+                else if (colorString == 'ff9900') {
+                    this.addEntity(Boss, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
                 }
             }
         }

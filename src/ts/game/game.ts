@@ -7,7 +7,7 @@ import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
-const startSubGame = 0;
+const startSubGame = 9;
 
 Sounds.loadSound({name: 'main1', path: 'music/'});
 Sounds.loadSound({name: 'main2', path: 'music/'});
@@ -184,7 +184,7 @@ export class Game {
 
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
-        for (let i = 0; i <= 9; i++) {
+        for (let i = 0; i <= 11; i++) {
             promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));

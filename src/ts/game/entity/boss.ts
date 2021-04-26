@@ -1,8 +1,9 @@
 import { Sounds } from "../../sounds";
-import { fromPx, toRoundedPx } from "../constants";
+import { fromPx, rng, toRoundedPx } from "../constants";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import * as Aseprite from "../../aseprite";
+import { Pickup } from "./pickup";
 
 
 export class Boss extends Entity {
@@ -18,7 +19,7 @@ export class Boss extends Entity {
 
         this.gravity = 0;
         this.isEnemy = true;
-        this.health = 12;
+        this.health = 30;
     }
 
     update(dt: number) {
@@ -50,6 +51,7 @@ export class Boss extends Entity {
                 y: toRoundedPx(this.y)
             },
             flipped: this.facingDir == FacingDir.RIGHT,
+            scale: 2,
         });
     }
 
@@ -60,7 +62,17 @@ export class Boss extends Entity {
         this.hurtCount = this.hurtCountLength;
 
         if (this.health == 0) {
+            const pickup = new Pickup(this.level);
+            pickup.midX = this.midX;
+            pickup.midY = this.midY;
+            pickup.dx = rng() < 0.5 ? -500 : 500;
+            pickup.dy = -700;
+            pickup.subGameIndex = 11;
+            this.level.entities.push(pickup);
+
             this.removeFromLevel();
+
+
         }
     }
 }

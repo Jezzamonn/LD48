@@ -60,7 +60,5 @@ export class FlyingEye extends Entity {
         if (this.health == 0) {
             this.removeFromLevel();
         }
-
-
     }
 }

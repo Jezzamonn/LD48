@@ -19,7 +19,7 @@
    },
    {
     "filename": "title 2.aseprite",
-    "frame": { "x": 182, "y": 1, "w": 180, "h": 120 },
+    "frame": { "x": 363, "y": 1, "w": 180, "h": 120 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
@@ -28,7 +28,7 @@
    },
    {
     "filename": "title 3.aseprite",
-    "frame": { "x": 363, "y": 1, "w": 180, "h": 120 },
+    "frame": { "x": 544, "y": 1, "w": 180, "h": 120 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
@@ -64,7 +64,7 @@
    },
    {
     "filename": "title 7.aseprite",
-    "frame": { "x": 1, "y": 243, "w": 180, "h": 120 },
+    "frame": { "x": 544, "y": 122, "w": 180, "h": 120 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
@@ -73,7 +73,25 @@
    },
    {
     "filename": "title 8.aseprite",
+    "frame": { "x": 1, "y": 243, "w": 180, "h": 120 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
+    "sourceSize": { "w": 180, "h": 120 },
+    "duration": 100
+   },
+   {
+    "filename": "title 9.aseprite",
     "frame": { "x": 182, "y": 243, "w": 180, "h": 120 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
+    "sourceSize": { "w": 180, "h": 120 },
+    "duration": 100
+   },
+   {
+    "filename": "title 10.aseprite",
+    "frame": { "x": 363, "y": 243, "w": 180, "h": 120 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 180, "h": 120 },
@@ -86,7 +104,7 @@
   "version": "1.2.27",
   "image": "title.png",
   "format": "RGBA8888",
-  "size": { "w": 544, "h": 364 },
+  "size": { "w": 725, "h": 364 },
   "scale": "1",
   "frameTags": [
    { "name": "game1", "from": 0, "to": 0, "direction": "forward" },
@@ -94,10 +112,12 @@
    { "name": "game3", "from": 2, "to": 2, "direction": "forward" },
    { "name": "game4", "from": 3, "to": 3, "direction": "forward" },
    { "name": "game5", "from": 4, "to": 4, "direction": "forward" },
-   { "name": "game?", "from": 5, "to": 5, "direction": "forward" },
-   { "name": "game7", "from": 6, "to": 6, "direction": "forward" },
-   { "name": "game9", "from": 7, "to": 7, "direction": "forward" },
-   { "name": "game10", "from": 8, "to": 8, "direction": "forward" }
+   { "name": "game6", "from": 5, "to": 5, "direction": "forward" },
+   { "name": "game8", "from": 6, "to": 6, "direction": "forward" },
+   { "name": "game?", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "game7", "from": 8, "to": 8, "direction": "forward" },
+   { "name": "game9", "from": 9, "to": 9, "direction": "forward" },
+   { "name": "game12", "from": 10, "to": 10, "direction": "forward" }
   ]
  }
 }
