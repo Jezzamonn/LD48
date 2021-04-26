@@ -87,6 +87,7 @@ export class Game {
 
         for (let i = 0; i < subGames.length - 1; i++) {
             subGames[i].subGameContainer.append(subGames[i+1].element);
+            subGames[i+1].frameElem.style.filter = subGames[i].hueRotateFilter;
         }
 
         // Also render each thingo

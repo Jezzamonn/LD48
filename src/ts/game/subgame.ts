@@ -12,6 +12,7 @@ Aseprite.loadImage({name: 'power_label', basePath: 'sprites/'});
 export class SubGame {
 
     element!: HTMLElement;
+    frameElem!: HTMLElement;
     subGameContainer!: HTMLElement;
     canvas!: HTMLCanvasElement;
     context!: CanvasRenderingContext2D;
@@ -52,15 +53,15 @@ export class SubGame {
         this.context = this.canvas.getContext('2d')!;
         Aseprite.disableSmoothing(this.context);
 
-        let frameElem = Images.images['frame'].image?.cloneNode() as HTMLImageElement;
-        if (frameElem == null) {
+        this.frameElem = Images.images['frame'].image?.cloneNode() as HTMLImageElement;
+        if (this.frameElem == null) {
             throw Error('Oh no the frame is null!');
         }
-        frameElem.classList.add('frame');
-        frameElem.style.width = (Images.images['frame'].image!.width * CANVAS_SCALE) + 'px';
-        frameElem.style.height = (Images.images['frame'].image!.height * CANVAS_SCALE) + 'px';
+        this.frameElem.classList.add('frame');
+        this.frameElem.style.width = (Images.images['frame'].image!.width * CANVAS_SCALE) + 'px';
+        this.frameElem.style.height = (Images.images['frame'].image!.height * CANVAS_SCALE) + 'px';
 
-        this.element.append(frameElem);
+        this.element.append(this.frameElem);
 
         this.subGameContainer = document.createElement('div');
         this.subGameContainer.classList.add('subgame-container');
@@ -88,7 +89,7 @@ export class SubGame {
 
     render() {
         this.context.resetTransform();
-        this.context.filter = `hue-rotate(${60 * this.index}deg)`
+        this.context.filter = this.hueRotateFilter;
 
         if (this.showingTitle) {
             this.renderTitle(this.context);
@@ -101,6 +102,10 @@ export class SubGame {
 
         this.context.resetTransform();
         this.renderPower(this.context);
+    }
+
+    get hueRotateFilter() {
+        return `hue-rotate(${60 * this.index}deg)`;
     }
 
     renderPower(context: CanvasRenderingContext2D) {
