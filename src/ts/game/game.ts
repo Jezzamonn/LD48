@@ -1,7 +1,7 @@
 import * as Images from "../images";
 import { Keys } from "../keys";
 import { Sounds } from "../sounds";
-import { Power } from "./constants";
+import { CANVAS_SCALE, Power } from "./constants";
 import { Level } from "./level";
 import { SubGame } from "./subgame";
 
@@ -94,6 +94,9 @@ export class Game {
         for (const subGame of this.subGames) {
             subGame.render();
         }
+
+        document.body.style.setProperty('--px-scale', CANVAS_SCALE + "px");
+
         this.updateFades();
     }
 

@@ -1,9 +1,13 @@
 
-html, body {
+html {
     font-family: sans-serif;
 
     background-color: #eee;
     overflow: hidden;
+}
+
+body {
+    --px-scale: 1px;
 }
 
 .content {
@@ -46,5 +50,5 @@ html, body {
 }
 
 .faded {
-    margin-top: 3000px;
+    margin-top: calc(var(--px-scale) * 750);
 }
