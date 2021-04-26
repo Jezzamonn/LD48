@@ -81,7 +81,8 @@ export class Level {
                     this.addEntity(FlyingEye, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
                 }
                 else if (colorString == 'ff9900') {
-                    this.addEntity(Boss, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
+                    const b = this.addEntity(Boss, {x, y}, {tilePos: {x: 0.5, y: 0.5}});
+                    b.makeTargets();
                 }
             }
         }
