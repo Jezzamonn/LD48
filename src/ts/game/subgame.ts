@@ -29,10 +29,7 @@ export class SubGame {
 
         this.makeElements();
 
-        this.camera.getTargetPosition = () => ({
-            x: this.level.player.midX + this.level.player.facingDirMult * fromPx(20),
-            y: this.level.player.midY - Math.round(0.15 * SCREEN_HEIGHT),
-        });
+        this.camera.getTargetPosition = () => this.level.player.cameraPos;
     }
 
     makeElements() {

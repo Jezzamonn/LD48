@@ -1,7 +1,7 @@
 import { Keys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
-import { fromPx, rng, toRoundedPx, Power } from "../constants";
+import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT } from "../constants";
 import { Pickup } from "./pickup";
 import { lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
@@ -40,6 +40,13 @@ export class Player extends Entity {
         this.debugColor = undefined;//'#fc9003'
 
         this.dxDampen = 10000;
+    }
+
+    get cameraPos(): Point {
+        const x = this.level.player.midX + this.level.player.facingDirMult * fromPx(20);
+        const crouchMult = this.crouching ? 1 : -1;
+        const y = this.level.player.midY + crouchMult * Math.round(0.15 * SCREEN_HEIGHT);
+        return {x, y};
     }
 
     get pickupX() {
