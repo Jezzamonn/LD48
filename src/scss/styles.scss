@@ -81,6 +81,10 @@ body {
     margin-top: calc(var(--px-scale) * 37px);
 }
 
+.extra-faded {
+    margin-top: calc(var(--px-scale) * 50px);
+}
+
 .hidden {
     display: none;
 }

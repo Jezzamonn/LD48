@@ -172,7 +172,7 @@ export class Game {
         for (let i = 0; i < subGames.length; i++) {
             let zoomIndex = this.activeSubGameIndex - i;
 
-            const shown = zoomIndex >= -1 && zoomIndex <= 2;
+            const shown = zoomIndex >= -2 && zoomIndex <= 2;
             subGames[i].frameElem.classList.toggle('hidden', !shown);
             subGames[i].canvas.classList.toggle('hidden', !shown);
 
@@ -187,7 +187,16 @@ export class Game {
         const subGames = this.subGames;
 
         for (let i = 0; i < subGames.length; i++) {
-            if (i > this.activeSubGameIndex) {
+            if (i > this.activeSubGameIndex + 1) {
+                subGames[i].canvas.classList.add('extra-faded');
+                subGames[i].frameElem.classList.add('extra-faded');
+            }
+            else {
+                subGames[i].canvas.classList.remove('extra-faded');
+                subGames[i].frameElem.classList.remove('extra-faded');
+            }
+
+            if (i == this.activeSubGameIndex + 1) {
                 subGames[i].canvas.classList.add('faded');
                 subGames[i].frameElem.classList.add('faded');
             }
