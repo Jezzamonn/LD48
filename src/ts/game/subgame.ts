@@ -1,6 +1,6 @@
 import { Camera } from "./camera/camera";
 import { CANVAS_SCALE, fromPx, Power, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH } from "./constants";
-import { Game } from "./game";
+import { Game, subGameScale } from "./game";
 import { Level } from "./level";
 import * as Aseprite from "../aseprite";
 import * as Images from "../images";
@@ -11,9 +11,7 @@ Aseprite.loadImage({name: 'power_label', basePath: 'sprites/'});
 
 export class SubGame {
 
-    element!: HTMLElement;
     frameElem!: HTMLElement;
-    subGameContainer!: HTMLElement;
     canvas!: HTMLCanvasElement;
     context!: CanvasRenderingContext2D;
 
@@ -36,19 +34,11 @@ export class SubGame {
     }
 
     makeElements() {
-        this.element = document.createElement('div');
-        this.element.classList.add('subgame', 'faded');
-
         this.canvas = document.createElement('canvas');
         this.canvas.width = PX_SCREEN_WIDTH;
         this.canvas.height = PX_SCREEN_HEIGHT;
-        this.canvas.style.width = (CANVAS_SCALE * PX_SCREEN_WIDTH) + 'px';
-        this.canvas.style.height = (CANVAS_SCALE * PX_SCREEN_HEIGHT) + 'px';
-        this.canvas.style.left = (CANVAS_SCALE * 20) + 'px';
-        this.canvas.style.top = (CANVAS_SCALE * 20) + 'px';
-        this.canvas.classList.add('canvas');
-
-        this.element.append(this.canvas);
+        this.canvas.classList.add('canvas', 'faded');
+        this.canvas.style.transform = `scale(${subGameScale})`;
 
         this.context = this.canvas.getContext('2d')!;
         Aseprite.disableSmoothing(this.context);
@@ -57,21 +47,8 @@ export class SubGame {
         if (this.frameElem == null) {
             throw Error('Oh no the frame is null!');
         }
-        this.frameElem.classList.add('frame');
-        this.frameElem.style.width = (Images.images['frame'].image!.width * CANVAS_SCALE) + 'px';
-        this.frameElem.style.height = (Images.images['frame'].image!.height * CANVAS_SCALE) + 'px';
-
-        this.element.append(this.frameElem);
-
-        this.subGameContainer = document.createElement('div');
-        this.subGameContainer.classList.add('subgame-container');
-        // this.subGameContainer.style.left = Math.round(CANVAS_SCALE * 20 + CANVAS_SCALE * PX_SCREEN_WIDTH / 2) + 'px';
-        // this.subGameContainer.style.top = Math.round(CANVAS_SCALE * 20 + CANVAS_SCALE * PX_SCREEN_HEIGHT / 2) + 'px';
-
-        this.element.append(this.subGameContainer);
-
-        this.element.style.width = (Images.images['frame'].image!.width * CANVAS_SCALE) + 'px';
-        this.element.style.height = (Images.images['frame'].image!.height * CANVAS_SCALE) + 'px';
+        this.frameElem.classList.add('frame', 'faded');
+        this.frameElem.style.transform = `scale(${subGameScale})`;
     }
 
     update(dt: number) {

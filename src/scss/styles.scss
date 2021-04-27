@@ -1,54 +1,86 @@
+$frame-width: 220px;
+$frame-height: 220px;
+
+$screen-left: 20px;
+$screen-top: 20px;
+$screen-width: 60px * 3;
+$screen-height: 60px * 2;
 
 html {
     font-family: sans-serif;
 
     background-color: #eee;
     overflow: hidden;
+
+    margin: 0;
 }
 
 body {
     --px-scale: 1px;
+
+    margin: 0;
 }
 
 .content {
+    width: 100vw;
+    height: 100vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    transition: transform 1s;
 }
 
 .subgame {
     position: relative;
     margin-top: 0;
-    transition: margin 0.5s;
 }
 
 .canvas {
     position: absolute;
+
+    left: calc(50% - var(--px-scale) * #{$frame-width} / 2);
+    top: calc(50% - var(--px-scale) * #{$frame-height} / 2);
+    width: calc(var(--px-scale) * #{$screen-width});
+    height: calc(var(--px-scale) * #{$screen-height});
+
+    padding-left: calc(var(--px-scale) * #{$screen-left});
+    padding-top: calc(var(--px-scale) * #{$screen-top});
+    padding-right: calc(var(--px-scale) * #{$frame-width - $screen-width - $screen-left});
+    padding-bottom: calc(var(--px-scale) * #{$frame-height - $screen-height - $screen-top});
+
     // Clean pixel art, please.
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+
+    transition: margin 0.5s, transform 1s;
 }
 
 .subgame-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.1, 0.1);
 }
 
 .frame {
     position: absolute;
+
+    left: calc(50% - var(--px-scale) * #{$frame-width} / 2);
+    top: calc(50% - var(--px-scale) * #{$frame-height} / 2);
+    width: calc(var(--px-scale) * #{$frame-width});
+    height: calc(var(--px-scale) * #{$frame-height});
+
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    z-index: 1;
+
+    transition: margin 0.5s, transform 1s;
 }
 
 .faded {
-    margin-top: calc(var(--px-scale) * 750);
+    margin-top: calc(var(--px-scale) * 37px);
+}
+
+.hidden {
+    display: none;
 }
