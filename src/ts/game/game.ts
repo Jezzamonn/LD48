@@ -36,8 +36,6 @@ export class Game {
             throw new Error('No content??')
         }
 
-        container.append(this.activeSubGame.element);
-
         this.updateCanvases();
 
         this.updateSong();
@@ -79,14 +77,21 @@ export class Game {
     updateCanvases() {
         const subGames = this.subGames;
 
-        for (const subGame of subGames) {
-            while (subGame.subGameContainer.firstChild) {
-                subGame.subGameContainer.removeChild(subGame.subGameContainer.lastChild!);
-            }
+        const container = document.querySelector('.content')!;
+
+        while (container.firstChild) {
+            container.removeChild(container.lastChild!);
         }
 
+        for (let i = 0; i < subGames.length; i++) {
+            container.append(subGames[i].canvas);
+        }
+        for (let i = subGames.length - 1; i >= 0; i--) {
+            container.append(subGames[i].frameElem);
+        }
+
+        // TODO: Filter
         for (let i = 0; i < subGames.length - 1; i++) {
-            subGames[i].subGameContainer.append(subGames[i+1].element);
             subGames[i+1].frameElem.style.filter = subGames[i].hueRotateFilter;
         }
 
@@ -95,8 +100,9 @@ export class Game {
             subGame.render();
         }
 
-        document.body.style.setProperty('--px-scale', CANVAS_SCALE + "px");
+        document.body.style.setProperty('--px-scale', CANVAS_SCALE.toString());
 
+        this.updateZoom();
         this.updateFades();
     }
 
@@ -161,22 +167,42 @@ export class Game {
 
     updateZoom() {
         const zoomPerLevel = 1 / subGameScale;
-        const container = document.querySelector('.content') as HTMLElement;
 
-        const zoom = Math.pow(zoomPerLevel, this.activeSubGameIndex);
+        const subGames = this.subGames;
+        for (let i = 0; i < subGames.length; i++) {
+            let zoomIndex = this.activeSubGameIndex - i;
 
-        container.style.transform = `scale(${zoom})`;
+            const shown = zoomIndex >= -2 && zoomIndex <= 2;
+            subGames[i].frameElem.classList.toggle('hidden', !shown);
+            subGames[i].canvas.classList.toggle('hidden', !shown);
+
+            const zoom = Math.pow(zoomPerLevel, this.activeSubGameIndex - i);
+
+            subGames[i].frameElem.style.transform = `scale(${zoom})`;
+            subGames[i].canvas.style.transform = `scale(${zoom})`;
+        }
     }
 
     updateFades() {
         const subGames = this.subGames;
 
         for (let i = 0; i < subGames.length; i++) {
-            if (i > this.activeSubGameIndex) {
-                subGames[i].element.classList.add('faded')
+            if (i > this.activeSubGameIndex + 1) {
+                subGames[i].canvas.classList.add('extra-faded');
+                subGames[i].frameElem.classList.add('extra-faded');
             }
             else {
-                subGames[i].element.classList.remove('faded')
+                subGames[i].canvas.classList.remove('extra-faded');
+                subGames[i].frameElem.classList.remove('extra-faded');
+            }
+
+            if (i == this.activeSubGameIndex + 1) {
+                subGames[i].canvas.classList.add('faded');
+                subGames[i].frameElem.classList.add('faded');
+            }
+            else {
+                subGames[i].canvas.classList.remove('faded');
+                subGames[i].frameElem.classList.remove('faded');
             }
         }
     }
