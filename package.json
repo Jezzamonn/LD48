@@ -18,7 +18,7 @@
       "patterns": [
         "src/static/**"
       ],
-      "extensions": "html,css,png,mp3"
+      "extensions": "html,css,png,gif,mp3"
     },
     "sprites": {
       "patterns": [
