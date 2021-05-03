@@ -214,7 +214,7 @@ export class Game {
     static loadAllImages(): Promise<void[]> {
         const promises: Promise<void>[] = [];
         for (let i = 0; i <= 11; i++) {
-            promises.push(Images.loadImage({name: `level${i}`, path: 'levels/'}));
+            promises.push(Images.loadImage({name: `level${i}`, extension: 'gif', path: 'levels/'}));
         }
         promises.push(Images.loadImage({name: 'frame', path: 'sprites/'}));
         return Promise.all(promises);

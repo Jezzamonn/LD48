@@ -305,7 +305,7 @@ function getFrame(imageData, animationName, time) {
  */
 export function disableSmoothing(context) {
     context.msImageSmoothingEnabled = false;
-    context.mozImageSmoothingEnabled = false;
+    // context.mozImageSmoothingEnabled = false;
     context.webkitImageSmoothingEnabled = false;
     context.imageSmoothingEnabled = false;
 }
