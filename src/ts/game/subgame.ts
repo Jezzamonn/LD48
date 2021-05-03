@@ -1,5 +1,5 @@
 import { Camera } from "./camera/camera";
-import { CANVAS_SCALE, fromPx, Power, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH } from "./constants";
+import { fromPx, Power, PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH, SCREEN_HEIGHT } from "./constants";
 import { Game, subGameScale } from "./game";
 import { Level } from "./level";
 import * as Aseprite from "../aseprite";
