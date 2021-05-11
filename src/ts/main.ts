@@ -1,7 +1,5 @@
-import { PX_SCREEN_HEIGHT, PX_SCREEN_WIDTH } from "./game/constants";
+import { PX_FRAME_HEIGHT, PX_FRAME_WIDTH } from "./game/constants";
 import { Game } from "./game/game";
-import { Level } from "./game/level";
-import { SubGame } from "./game/subgame";
 import { Keys } from "./keys";
 
 let simulatedTimeMs: number;
@@ -12,11 +10,29 @@ let game: Game;
 async function init() {
     Keys.setUp();
 
+    resize();
+    window.addEventListener('resize', resize);
+
     await Game.loadAllImages();
 
     game = new Game();
 
     requestAnimationFrame(doAnimationFrame);
+}
+
+function resize() {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const xScale = windowWidth / PX_FRAME_WIDTH;
+    const yScale = windowHeight / PX_FRAME_HEIGHT;
+
+    const scale = Math.max(Math.min(xScale, yScale), 1);
+
+    const pixelRatio = window.devicePixelRatio || 1;
+
+    const pxScale = Math.floor(scale * pixelRatio) / pixelRatio;
+    document.body.style.setProperty('--px-scale', pxScale.toString());
 }
 
 function doAnimationFrame() {
