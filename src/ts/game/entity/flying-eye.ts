@@ -6,7 +6,7 @@ import { Sounds } from "../../sounds";
 
 Aseprite.loadImage({name: 'flying_eye', basePath: 'sprites/'});
 
-const jitterAmt = fromPx(2);
+const jitterAmt = fromPx(1.5);
 
 export class FlyingEye extends Entity {
 
@@ -45,8 +45,8 @@ export class FlyingEye extends Entity {
 
     render(context: CanvasRenderingContext2D) {
 
-        const xJitter = Math.cos(5 * Math.PI * (this.animCount + this.jitterPhase + 0.3));
-        const yJitter = Math.cos(7 * Math.PI * (this.animCount + this.jitterPhase));
+        const xJitter = Math.cos(2.5 * Math.PI * (this.animCount + this.jitterPhase + 0.3));
+        const yJitter = Math.cos(3.5 * Math.PI * (this.animCount + this.jitterPhase));
 
         Aseprite.drawAnimation({
             context,
