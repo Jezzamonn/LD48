@@ -3,7 +3,7 @@ import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT } from "../constants";
 import { Pickup } from "./pickup";
-import { lerp } from "../../util";
+import { clampedSplitInternal, lerp } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";
 import { Sounds } from "../../sounds";
@@ -185,13 +185,19 @@ export class Player extends Entity {
         if (this.midAir) {
             const jumpAnimSwitch = 400;
             if (this.dy < -jumpAnimSwitch) {
-                animName = 'jump-up'
+                animName = 'jump-up';
             }
             else if (this.dy > jumpAnimSwitch) {
-                animName = 'jump-down'
+                animName = 'jump-down';
             }
             else {
-                animName = 'jump-mid'
+                animName = 'jump-mid';
+                // Pick the right frame based on the y speed
+                // Also, just realized this function is the inverse lerp haha
+                const animationPosition = clampedSplitInternal(this.dy, -jumpAnimSwitch, jumpAnimSwitch);
+
+                const animLength = (Aseprite.images['character'].animations!)['jump-mid'].length / 1000;
+                this.animCount = animationPosition * animLength;
             }
         }
         else if (this.crouching) {

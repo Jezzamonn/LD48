@@ -61,6 +61,24 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
+   },
+   {
+    "filename": "character 7.aseprite",
+    "frame": { "x": 1, "y": 35, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "character 8.aseprite",
+    "frame": { "x": 18, "y": 35, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
    }
  ],
  "meta": {
@@ -68,15 +86,15 @@
   "version": "1.2.27",
   "image": "character.png",
   "format": "RGBA8888",
-  "size": { "w": 52, "h": 35 },
+  "size": { "w": 52, "h": 52 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 0, "direction": "forward" },
    { "name": "run", "from": 1, "to": 2, "direction": "forward" },
    { "name": "jump-up", "from": 3, "to": 3, "direction": "forward" },
-   { "name": "jump-mid", "from": 4, "to": 4, "direction": "forward" },
-   { "name": "jump-down", "from": 5, "to": 5, "direction": "forward" },
-   { "name": "crouch", "from": 6, "to": 6, "direction": "forward" }
+   { "name": "jump-mid", "from": 4, "to": 6, "direction": "forward" },
+   { "name": "jump-down", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "crouch", "from": 8, "to": 8, "direction": "forward" }
   ]
  }
 }
