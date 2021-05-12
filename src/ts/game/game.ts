@@ -92,13 +92,10 @@ export class Game {
             container.append(subGames[i].frameElem);
         }
 
-        // TODO: Filter
-        for (let i = 0; i < subGames.length - 1; i++) {
-            subGames[i+1].frameElem.style.filter = subGames[i].hueRotateFilter;
-        }
-
         // Also render each thingo
         for (const subGame of this.subGames) {
+            subGame.frameElem.style.filter = subGame.hueRotateFilter;
+
             subGame.render();
         }
 
