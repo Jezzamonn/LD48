@@ -14,7 +14,9 @@ Sounds.loadSound({name: 'main2', path: 'music/'});
 Sounds.loadSound({name: 'main3', path: 'music/'});
 Sounds.loadSound({name: 'main4', path: 'music/'});
 Sounds.loadSound({name: 'main5', path: 'music/'});
-Sounds.loadSound({name: 'cute', path: 'music/'});
+Sounds.loadSound({name: 'cute1', path: 'music/'});
+Sounds.loadSound({name: 'cute2', path: 'music/'});
+Sounds.loadSound({name: 'cute3', path: 'music/'});
 
 export class Game {
 
@@ -155,9 +157,11 @@ export class Game {
                 songName = 'main5';
                 break;
             case 3:
+                songName = 'cute2';
             case 6:
+                songName = 'cute3';
             case 8:
-                songName = 'cute';
+                songName = 'cute3';
                 break;
         }
         Sounds.setSong(songName);

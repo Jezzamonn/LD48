@@ -97,7 +97,7 @@ class _Sounds {
         audio.volume = 0.5;
         audio.loop = true;
 
-        if (lastSongName?.startsWith('main') && songName.startsWith('main') && songPos) {
+        if (lastSongName?.slice(0, 4) == songName.slice(0, 4) && songPos) {
             audio.currentTime = songPos;
         }
 
