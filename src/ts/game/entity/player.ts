@@ -11,6 +11,7 @@ import { Sounds } from "../../sounds";
 const jumpSpeed = 1550;
 const bigJumpSpeed = 2500;
 const walkSpeed = 600;
+const landTime = 0.15;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
@@ -30,6 +31,7 @@ export class Player extends Entity {
     crouching = false;
     shootCooldownTime = 0.15;
     shootCooldown = 0;
+    landCount = 0;
 
     constructor(level: Level) {
         super(level);
@@ -62,6 +64,10 @@ export class Player extends Entity {
 
         if (this.shootCooldown > 0) {
             this.shootCooldown -= dt;
+        }
+
+        if (this.landCount > 0) {
+            this.landCount -= dt;
         }
 
         if (Keys.wasPressedThisFrame('ArrowUp')) {
@@ -135,6 +141,7 @@ export class Player extends Entity {
         else {
             this.dy = -jumpSpeed;
         }
+
         Sounds.playSound('jump');
     }
 
@@ -184,7 +191,10 @@ export class Player extends Entity {
         let animName = 'idle';
         if (this.midAir) {
             const jumpAnimSwitch = 400;
-            if (this.dy < -jumpAnimSwitch) {
+            if (this.dy < -0.7 * jumpSpeed) {
+                animName = 'jump-up-stretch';
+            }
+            else if (this.dy < -jumpAnimSwitch) {
                 animName = 'jump-up';
             }
             else if (this.dy > jumpAnimSwitch) {
@@ -194,14 +204,20 @@ export class Player extends Entity {
                 animName = 'jump-mid';
                 // Pick the right frame based on the y speed
                 // Also, just realized this function is the inverse lerp haha
-                const animationPosition = clampedSplitInternal(this.dy, -jumpAnimSwitch, jumpAnimSwitch);
+                const animPosition = clampedSplitInternal(this.dy, -jumpAnimSwitch, jumpAnimSwitch);
 
                 const animLength = (Aseprite.images['character'].animations!)['jump-mid'].length / 1000;
-                this.animCount = animationPosition * animLength;
+                this.animCount = animPosition * animLength;
             }
         }
         else if (this.crouching) {
             animName = 'crouch';
+        }
+        else if (this.landCount > 0) {
+            animName = 'land';
+            const animPosition = clampedSplitInternal(this.landCount, landTime, 0);
+            const animLength = (Aseprite.images['character'].animations!)['land'].length / 1000;
+            this.animCount = animPosition * animLength;
         }
         else {
             if (Keys.isPressed('ArrowLeft') || Keys.isPressed('ArrowRight')) {
@@ -232,6 +248,7 @@ export class Player extends Entity {
         super.onDownCollision();
 
         this.midAir = false;
+        this.landCount = landTime;
 
         Sounds.playSound('land');
     }
