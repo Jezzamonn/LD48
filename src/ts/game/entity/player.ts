@@ -52,7 +52,11 @@ export class Player extends Entity {
     }
 
     get pickupX() {
-        return this.midX + this.facingDirMult * fromPx(6);
+        let pxDist = 6;
+        if (this.shootCooldown > 0.7 * this.shootCooldownTime) {
+            pxDist = 5;
+        }
+        return this.midX + this.facingDirMult * fromPx(pxDist);
     }
 
     get pickupY() {
