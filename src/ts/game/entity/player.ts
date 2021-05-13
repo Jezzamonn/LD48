@@ -3,7 +3,7 @@ import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT } from "../constants";
 import { Pickup } from "./pickup";
-import { clampedSplitInternal, lerp } from "../../util";
+import { clampedSplitInternal, splitInternal } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";
 import { Sounds } from "../../sounds";
@@ -46,8 +46,15 @@ export class Player extends Entity {
 
     get cameraPos(): Point {
         const x = this.level.player.midX + this.level.player.facingDirMult * fromPx(20);
-        const crouchMult = this.crouching ? 1 : -1;
-        const y = this.level.player.midY + crouchMult * Math.round(0.15 * SCREEN_HEIGHT);
+        let y = this.level.player.midY - Math.round(0.12 * SCREEN_HEIGHT);
+
+        if (this.crouching) {
+            y += Math.round(0.3 * SCREEN_HEIGHT);
+        }
+        if (this.midAir) {
+            const jumpAmt = splitInternal(this.dy, -jumpSpeed, jumpSpeed);
+            y += (jumpAmt + 0.1) * Math.round(0.5 * SCREEN_HEIGHT);
+        }
         return {x, y};
     }
 
