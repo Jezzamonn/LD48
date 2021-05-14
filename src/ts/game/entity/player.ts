@@ -12,6 +12,7 @@ const jumpSpeed = 1550;
 const bigJumpSpeed = 2500;
 const walkSpeed = 600;
 const landTime = 0.15;
+const wallBumpTime = 0.15;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
@@ -32,6 +33,7 @@ export class Player extends Entity {
     shootCooldownTime = 0.15;
     shootCooldown = 0;
     landCount = 0;
+    wallBumpCount = 0;
 
     constructor(level: Level) {
         super(level);
@@ -230,6 +232,12 @@ export class Player extends Entity {
             const animLength = (Aseprite.images['character'].animations!)['land'].length / 1000;
             this.animCount = animPosition * animLength;
         }
+        else if (this.wallBumpCount > 0) {
+            animName = 'wall-bump';
+            const animPosition = clampedSplitInternal(this.wallBumpCount, wallBumpTime, 0);
+            const animLength = (Aseprite.images['character'].animations!)['wall-bump'].length / 1000;
+            this.animCount = animPosition * animLength;
+        }
         else {
             if (Keys.isPressed('ArrowLeft') || Keys.isPressed('ArrowRight')) {
                 animName = 'run';
@@ -262,6 +270,18 @@ export class Player extends Entity {
         this.landCount = landTime;
 
         Sounds.playSound('land');
+    }
+
+    onLeftCollision() {
+        super.onLeftCollision();
+
+        this.wallBumpCount = wallBumpTime;
+    }
+
+    onRightCollision() {
+        super.onRightCollision();
+
+        this.wallBumpCount = wallBumpTime;
     }
 
     takeDamage() {
