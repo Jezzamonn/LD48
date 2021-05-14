@@ -12,7 +12,7 @@ const jumpSpeed = 1550;
 const bigJumpSpeed = 2500;
 const walkSpeed = 600;
 const landTime = 0.15;
-const wallBumpTime = 0.15;
+const wallBumpTime = 0.1;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
@@ -34,6 +34,9 @@ export class Player extends Entity {
     shootCooldown = 0;
     landCount = 0;
     wallBumpCount = 0;
+    canWallBump = true;
+
+    lastX = 0;
 
     constructor(level: Level) {
         super(level);
@@ -83,6 +86,10 @@ export class Player extends Entity {
             this.landCount -= dt;
         }
 
+        if (this.wallBumpCount > 0) {
+            this.wallBumpCount -= dt;
+        }
+
         if (Keys.wasPressedThisFrame('ArrowUp')) {
             if (!this.midAir) {
                 this.jump();
@@ -100,10 +107,18 @@ export class Player extends Entity {
         this.dampen(dt);
         if (!this.crouching) {
             if (Keys.isPressed('ArrowLeft')) {
+                if (this.facingDir != FacingDir.LEFT) {
+                    this.wallBumpCount = 0;
+                    this.canWallBump = true;
+                }
                 this.facingDir = FacingDir.LEFT;
                 this.dx = -walkSpeed;
             }
             if (Keys.isPressed('ArrowRight')) {
+                if (this.facingDir != FacingDir.RIGHT) {
+                    this.wallBumpCount = 0;
+                    this.canWallBump = true;
+                }
                 this.facingDir = FacingDir.RIGHT;
                 this.dx = walkSpeed;
             }
@@ -143,8 +158,14 @@ export class Player extends Entity {
             }
         }
 
+        this.lastX = this.x;
+
         this.moveX(dt);
         this.moveY(dt);
+
+        if (this.lastX != this.x) {
+            this.canWallBump = true;
+        }
     }
 
     jump() {
@@ -202,7 +223,14 @@ export class Player extends Entity {
 
         // Just figure out the animation based on what's happening?
         let animName = 'idle';
-        if (this.midAir) {
+
+        if (this.wallBumpCount > 0) {
+            animName = 'wall-bump';
+            const animPosition = clampedSplitInternal(this.wallBumpCount, wallBumpTime, 0);
+            const animLength = (Aseprite.images['character'].animations!)['wall-bump'].length / 1000;
+            this.animCount = animPosition * animLength;
+        }
+        else if (this.midAir) {
             const jumpAnimSwitch = 400;
             if (this.dy < -0.7 * jumpSpeed) {
                 animName = 'jump-up-stretch';
@@ -232,14 +260,8 @@ export class Player extends Entity {
             const animLength = (Aseprite.images['character'].animations!)['land'].length / 1000;
             this.animCount = animPosition * animLength;
         }
-        else if (this.wallBumpCount > 0) {
-            animName = 'wall-bump';
-            const animPosition = clampedSplitInternal(this.wallBumpCount, wallBumpTime, 0);
-            const animLength = (Aseprite.images['character'].animations!)['wall-bump'].length / 1000;
-            this.animCount = animPosition * animLength;
-        }
         else {
-            if (Keys.isPressed('ArrowLeft') || Keys.isPressed('ArrowRight')) {
+            if (this.lastX != this.x) {
                 animName = 'run';
             }
         }
@@ -275,13 +297,20 @@ export class Player extends Entity {
     onLeftCollision() {
         super.onLeftCollision();
 
-        this.wallBumpCount = wallBumpTime;
+        this.checkWallBump();
     }
 
     onRightCollision() {
         super.onRightCollision();
 
-        this.wallBumpCount = wallBumpTime;
+        this.checkWallBump();
+    }
+
+    checkWallBump() {
+        if (this.canWallBump) {
+            this.wallBumpCount = wallBumpTime;
+            this.canWallBump = false;
+        }
     }
 
     takeDamage() {
