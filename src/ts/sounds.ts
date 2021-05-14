@@ -61,18 +61,21 @@ class _Sounds {
             return;
         }
         if (name == 'jump') {
-            audio.volume = 0.3;
+            audio.volume = 0.12;
         }
         if (name == 'land') {
             audio.volume = 0.4;
         }
         if (name == 'shoot') {
-            audio.volume = 0.4;
+            audio.volume = 0.18;
         }
         if (name == 'shoot2') {
             audio.volume = 0.2;
         }
         if (name == 'hit') {
+            audio.volume = 0.25;
+        }
+        if (name == 'explosion') {
             audio.volume = 0.3;
         }
         audio.volume *= volume;
