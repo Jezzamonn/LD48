@@ -156,8 +156,17 @@ export class Player extends Entity {
 
 
         if (this.midAir) {
+            // To emphasize the head bump, don't apply gravity for a bit
             if (this.headBumpCount < 0.5 * headBumpTime) {
-                this.applyGravity(dt);
+
+                // If the player is moving up but they're not holding up, apply
+                // extra gravity to make the jump shorter.
+                if (this.dy < 0 && !Keys.isPressed('ArrowUp')) {
+                    this.applyGravity(3 * dt);
+                }
+                else {
+                    this.applyGravity(dt);
+                }
             }
         }
         else {
