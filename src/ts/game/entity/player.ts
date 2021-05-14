@@ -156,7 +156,9 @@ export class Player extends Entity {
 
 
         if (this.midAir) {
-            this.applyGravity(dt);
+            if (this.headBumpCount < 0.5 * headBumpTime) {
+                this.applyGravity(dt);
+            }
         }
         else {
             if (!this.isStandingOnGround()) {
@@ -330,8 +332,6 @@ export class Player extends Entity {
             this.wallBumpCount = wallBumpTime;
             this.canWallBump = false;
             Sounds.playSound('land', {volume: 0.3});
-
-            console.log('wall bump?');
         }
     }
 
