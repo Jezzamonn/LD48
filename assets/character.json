@@ -46,7 +46,7 @@
    },
    {
     "filename": "character 5.aseprite",
-    "frame": { "x": 1, "y": 18, "w": 16, "h": 16 },
+    "frame": { "x": 69, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -55,7 +55,7 @@
    },
    {
     "filename": "character 6.aseprite",
-    "frame": { "x": 18, "y": 18, "w": 16, "h": 16 },
+    "frame": { "x": 1, "y": 18, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -64,7 +64,7 @@
    },
    {
     "filename": "character 7.aseprite",
-    "frame": { "x": 35, "y": 18, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 18, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -73,7 +73,7 @@
    },
    {
     "filename": "character 8.aseprite",
-    "frame": { "x": 52, "y": 18, "w": 16, "h": 16 },
+    "frame": { "x": 35, "y": 18, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -91,7 +91,7 @@
    },
    {
     "filename": "character 10.aseprite",
-    "frame": { "x": 52, "y": 18, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 18, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -100,7 +100,7 @@
    },
    {
     "filename": "character 11.aseprite",
-    "frame": { "x": 1, "y": 35, "w": 16, "h": 16 },
+    "frame": { "x": 69, "y": 18, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -109,7 +109,7 @@
    },
    {
     "filename": "character 12.aseprite",
-    "frame": { "x": 18, "y": 35, "w": 16, "h": 16 },
+    "frame": { "x": 1, "y": 35, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -118,7 +118,7 @@
    },
    {
     "filename": "character 13.aseprite",
-    "frame": { "x": 35, "y": 35, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 35, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -127,7 +127,7 @@
    },
    {
     "filename": "character 14.aseprite",
-    "frame": { "x": 52, "y": 35, "w": 16, "h": 16 },
+    "frame": { "x": 35, "y": 35, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -136,7 +136,7 @@
    },
    {
     "filename": "character 15.aseprite",
-    "frame": { "x": 1, "y": 52, "w": 16, "h": 16 },
+    "frame": { "x": 52, "y": 35, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -145,7 +145,7 @@
    },
    {
     "filename": "character 16.aseprite",
-    "frame": { "x": 18, "y": 52, "w": 16, "h": 16 },
+    "frame": { "x": 69, "y": 35, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -154,7 +154,7 @@
    },
    {
     "filename": "character 17.aseprite",
-    "frame": { "x": 35, "y": 52, "w": 16, "h": 16 },
+    "frame": { "x": 1, "y": 52, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -163,7 +163,7 @@
    },
    {
     "filename": "character 18.aseprite",
-    "frame": { "x": 52, "y": 52, "w": 16, "h": 16 },
+    "frame": { "x": 18, "y": 52, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -176,13 +176,14 @@
   "version": "1.2.27",
   "image": "character.png",
   "format": "RGBA8888",
-  "size": { "w": 69, "h": 69 },
+  "size": { "w": 86, "h": 69 },
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 0, "direction": "forward" },
    { "name": "run", "from": 1, "to": 2, "direction": "forward" },
    { "name": "wall-bump", "from": 3, "to": 4, "direction": "forward" },
    { "name": "land", "from": 5, "to": 7, "direction": "forward" },
+   { "name": "head-bump", "from": 8, "to": 10, "direction": "forward" },
    { "name": "jump-up-stretch", "from": 11, "to": 11, "direction": "forward" },
    { "name": "jump-up", "from": 12, "to": 12, "direction": "forward" },
    { "name": "jump-mid", "from": 13, "to": 15, "direction": "forward" },

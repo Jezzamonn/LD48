@@ -230,7 +230,13 @@ export class Player extends Entity {
         // Just figure out the animation based on what's happening?
         let animName = 'idle';
 
-        if (this.wallBumpCount > 0) {
+        if (this.headBumpCount > 0) {
+            animName = 'head-bump';
+            const animPosition = clampedSplitInternal(this.headBumpCount, headBumpTime, 0);
+            const animLength = (Aseprite.images['character'].animations!)['head-bump'].length / 1000;
+            this.animCount = animPosition * animLength;
+        }
+        else if (this.wallBumpCount > 0) {
             animName = 'wall-bump';
             const animPosition = clampedSplitInternal(this.wallBumpCount, wallBumpTime, 0);
             const animLength = (Aseprite.images['character'].animations!)['wall-bump'].length / 1000;
