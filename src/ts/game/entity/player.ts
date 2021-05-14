@@ -169,7 +169,7 @@ export class Player extends Entity {
         this.moveX(dt);
         this.moveY(dt);
 
-        if (this.lastX != this.x) {
+        if (this.lastX != this.x && this.wallBumpCount < 0.9 * wallBumpTime) {
             this.canWallBump = true;
         }
     }
@@ -324,6 +324,8 @@ export class Player extends Entity {
             this.wallBumpCount = wallBumpTime;
             this.canWallBump = false;
             Sounds.playSound('land', {volume: 0.3});
+
+            console.log('wall bump?');
         }
     }
 
