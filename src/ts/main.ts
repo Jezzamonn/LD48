@@ -1,6 +1,7 @@
 import { PX_FRAME_HEIGHT, PX_FRAME_WIDTH } from "./game/constants";
 import { Game } from "./game/game";
 import { Keys } from "./keys";
+import { Sounds } from "./sounds";
 
 let simulatedTimeMs: number;
 let timeStep = 1 / 60;
@@ -9,6 +10,7 @@ let game: Game;
 
 async function init() {
     Keys.setUp();
+    Sounds.loadMuteState();
 
     resize();
     window.addEventListener('resize', resize);

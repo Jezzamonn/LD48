@@ -117,6 +117,11 @@ export class Game {
         if (Keys.wasPressedThisFrame('KeyD')) {
             this.goDownAGame();
         }
+
+        // Mute
+        if (Keys.wasPressedThisFrame('KeyM')) {
+            Sounds.toggleMute();
+        }
     }
 
     goUpAGame() {
