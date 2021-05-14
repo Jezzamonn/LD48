@@ -44,7 +44,7 @@ class _Sounds {
         return promise;
     }
 
-    playSound(name: string) {
+    playSound(name: string, {volume = 1}: {volume?: number} = {}) {
         const audio = (this.audios[name].audio?.cloneNode() as HTMLAudioElement);
         if (audio == null) {
             return;
@@ -64,6 +64,7 @@ class _Sounds {
         if (name == 'hit') {
             audio.volume = 0.3;
         }
+        audio.volume *= volume;
         audio.play();
     }
 

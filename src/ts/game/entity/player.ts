@@ -13,6 +13,7 @@ const bigJumpSpeed = 2500;
 const walkSpeed = 600;
 const landTime = 0.15;
 const wallBumpTime = 0.1;
+const headBumpTime = 0.15;
 
 Aseprite.loadImage({name: 'character', basePath: 'sprites/'});
 
@@ -35,6 +36,7 @@ export class Player extends Entity {
     landCount = 0;
     wallBumpCount = 0;
     canWallBump = true;
+    headBumpCount = 0;
 
     lastX = 0;
 
@@ -88,6 +90,10 @@ export class Player extends Entity {
 
         if (this.wallBumpCount > 0) {
             this.wallBumpCount -= dt;
+        }
+
+        if (this.headBumpCount > 0) {
+            this.headBumpCount -= dt;
         }
 
         if (Keys.wasPressedThisFrame('ArrowUp')) {
@@ -294,6 +300,13 @@ export class Player extends Entity {
         Sounds.playSound('land');
     }
 
+    onUpCollision() {
+        super.onUpCollision();
+
+        this.headBumpCount = headBumpTime;
+        Sounds.playSound('land', {volume: 0.3});
+    }
+
     onLeftCollision() {
         super.onLeftCollision();
 
@@ -310,6 +323,7 @@ export class Player extends Entity {
         if (this.canWallBump) {
             this.wallBumpCount = wallBumpTime;
             this.canWallBump = false;
+            Sounds.playSound('land', {volume: 0.3});
         }
     }
 
