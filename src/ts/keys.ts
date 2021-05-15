@@ -1,6 +1,14 @@
 const disableDefaultKeys = new Set(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"]);
 
-class _Keys {
+export interface IKeys {
+    setUp(): void;
+    resetFrame(): void;
+    isPressed(keyCode: string): boolean;
+    wasPressedThisFrame(keyCode: string): boolean;
+    wasReleasedThisFrame(keyCode: string): boolean;
+}
+
+class _Keys implements IKeys {
     #pressedKeys: Set<string> = new Set();
     #pressedThisFrame: Set<string> = new Set();
     #releasedThisFrame: Set<string> = new Set();
@@ -43,4 +51,24 @@ class _Keys {
 
 }
 
+class _NullKeys implements IKeys {
+
+    setUp(): void {}
+    resetFrame(): void {}
+
+    isPressed(keyCode: string): boolean {
+        return false;
+    }
+
+    wasPressedThisFrame(keyCode: string): boolean {
+        return false;
+    }
+
+    wasReleasedThisFrame(keyCode: string): boolean {
+        return false;
+    }
+}
+
 export const Keys = new _Keys();
+
+export const NullKeys = new _NullKeys();

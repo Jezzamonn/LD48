@@ -1,4 +1,4 @@
-import { Keys } from "../../keys";
+import { IKeys, Keys, NullKeys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT } from "../constants";
@@ -11,6 +11,8 @@ import { Sounds } from "../../sounds";
 const jumpSpeed = 1550;
 const bigJumpSpeed = 2500;
 const walkSpeed = 600;
+const knockBackXSpeed = 300;
+const knockBackYSpeed = 1000;
 const landTime = 0.15;
 const wallBumpTime = 0.1;
 const headBumpTime = 0.15;
@@ -37,6 +39,8 @@ export class Player extends Entity {
     wallBumpCount = 0;
     canWallBump = true;
     headBumpCount = 0;
+    isDead = false;
+    deathAnim = 'die';
 
     lastX = 0;
 
@@ -77,6 +81,13 @@ export class Player extends Entity {
         return this.midY + fromPx(2);
     }
 
+    get keys(): IKeys {
+        if (this.isDead) {
+            return NullKeys;
+        }
+        return Keys;
+    }
+
     update(dt: number) {
         this.animCount += dt;
 
@@ -96,7 +107,15 @@ export class Player extends Entity {
             this.headBumpCount -= dt;
         }
 
-        if (Keys.wasPressedThisFrame('ArrowUp')) {
+        if (this.isDead) {
+            // Using Keys directly
+            if (Keys.isPressed('KeyX') || Keys.isPressed('Space')) {
+                this.respawn();
+                return; // idk if this makes sense
+            }
+        }
+
+        if (this.keys.wasPressedThisFrame('ArrowUp')) {
             if (!this.midAir) {
                 this.jump();
                 this.midAirJumpsLeft = this.midAirJumps;
@@ -107,31 +126,38 @@ export class Player extends Entity {
             }
         }
 
-        this.crouching = Keys.isPressed('ArrowDown');
+        this.crouching = this.keys.isPressed('ArrowDown');
 
         // TODO: Smoothen this.
-        this.dampen(dt);
-        if (!this.crouching) {
-            if (Keys.isPressed('ArrowLeft')) {
-                if (this.facingDir != FacingDir.LEFT) {
-                    this.wallBumpCount = 0;
-                    this.canWallBump = true;
-                }
-                this.facingDir = FacingDir.LEFT;
-                this.dx = -walkSpeed;
+        if (this.isDead) {
+            if (!this.midAir) {
+                this.dampen(dt);
             }
-            if (Keys.isPressed('ArrowRight')) {
-                if (this.facingDir != FacingDir.RIGHT) {
-                    this.wallBumpCount = 0;
-                    this.canWallBump = true;
+        }
+        else {
+            this.dampen(dt);
+            if (!this.crouching) {
+                if (this.keys.isPressed('ArrowLeft')) {
+                    if (this.facingDir != FacingDir.LEFT) {
+                        this.wallBumpCount = 0;
+                        this.canWallBump = true;
+                    }
+                    this.facingDir = FacingDir.LEFT;
+                    this.dx = -walkSpeed;
                 }
-                this.facingDir = FacingDir.RIGHT;
-                this.dx = walkSpeed;
+                if (this.keys.isPressed('ArrowRight')) {
+                    if (this.facingDir != FacingDir.RIGHT) {
+                        this.wallBumpCount = 0;
+                        this.canWallBump = true;
+                    }
+                    this.facingDir = FacingDir.RIGHT;
+                    this.dx = walkSpeed;
+                }
             }
         }
 
         if (this.crouching && !this.midAir) {
-            if (Keys.wasPressedThisFrame('KeyX')) {
+            if (this.keys.wasPressedThisFrame('KeyX')) {
                 if (this.pickup == null) {
                     this.checkForPickup();
                 }
@@ -142,7 +168,7 @@ export class Player extends Entity {
         }
         else {
             if (this.level.subGame.game.currentPowers.has(Power.SHOOT) &&
-                Keys.isPressed('KeyX') &&
+                this.keys.isPressed('KeyX') &&
                 this.shootCooldown <= 0) {
 
                 this.fire();
@@ -161,7 +187,7 @@ export class Player extends Entity {
 
                 // If the player is moving up but they're not holding up, apply
                 // extra gravity to make the jump shorter.
-                if (this.dy < 0 && !Keys.isPressed('ArrowUp')) {
+                if (this.dy < 0 && !this.keys.isPressed('ArrowUp')) {
                     this.applyGravity(3 * dt);
                 }
                 else {
@@ -241,7 +267,19 @@ export class Player extends Entity {
         // Just figure out the animation based on what's happening?
         let animName = 'idle';
 
-        if (this.headBumpCount > 0) {
+        if (this.isDead) {
+            if (this.midAir) {
+                animName = 'hurt-falling';
+            }
+            else {
+                animName = this.deathAnim;
+                const animLength = (Aseprite.images['character'].animations!)[this.deathAnim].length / 1000;
+                if (this.animCount > animLength - 0.001) {
+                    this.animCount = animLength - 0.001;
+                }
+            }
+        }
+        else if (this.headBumpCount > 0) {
             animName = 'head-bump';
             const animPosition = clampedSplitInternal(this.headBumpCount, headBumpTime, 0);
             const animLength = (Aseprite.images['character'].animations!)['head-bump'].length / 1000;
@@ -314,6 +352,11 @@ export class Player extends Entity {
         this.midAir = false;
         this.landCount = landTime;
 
+        if (this.isDead) {
+            this.animCount = 0;
+            this.deathAnim = rng() < 0.1 ? 'place-grave' : 'die';
+        }
+
         Sounds.playSound('land');
     }
 
@@ -344,9 +387,16 @@ export class Player extends Entity {
         }
     }
 
-    takeDamage() {
-        // Wowo!
+    respawn() {
         Sounds.playSound('explosion');
         this.level.reset();
+    }
+
+    takeDamage() {
+        // TODO: Hurt SFX
+        this.dx = this.facingDirMult * -knockBackXSpeed;
+        this.dy = -knockBackYSpeed;
+        this.midAir = true;
+        this.isDead = true;
     }
 }

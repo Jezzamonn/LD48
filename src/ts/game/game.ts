@@ -7,7 +7,7 @@ import { SubGame } from "./subgame";
 
 export const subGameScale = 0.1;
 
-const startSubGame = 0;
+const startSubGame = 5;
 
 Sounds.loadSound({name: 'main1', path: 'music/'});
 Sounds.loadSound({name: 'main2', path: 'music/'});
