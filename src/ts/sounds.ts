@@ -78,6 +78,9 @@ class _Sounds {
         if (name == 'explosion') {
             audio.volume = 0.3;
         }
+        if (name == 'hurt') {
+            audio.volume = 0.4;
+        }
         audio.volume *= volume;
         audio.play();
     }

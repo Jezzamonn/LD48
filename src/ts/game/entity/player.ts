@@ -25,6 +25,7 @@ Sounds.loadSound({name: 'shoot', path: 'sfx/'});
 Sounds.loadSound({name: 'shoot2', path: 'sfx/'});
 Sounds.loadSound({name: 'explosion', path: 'sfx/'});
 Sounds.loadSound({name: 'hit', path: 'sfx/'});
+Sounds.loadSound({name: 'hurt', path: 'sfx/'});
 
 export class Player extends Entity {
 
@@ -393,7 +394,9 @@ export class Player extends Entity {
     }
 
     takeDamage() {
-        // TODO: Hurt SFX
+        if (!this.isDead) {
+            Sounds.playSound('hurt');
+        }
         this.dx = this.facingDirMult * -knockBackXSpeed;
         this.dy = -knockBackYSpeed;
         this.midAir = true;
