@@ -4,6 +4,7 @@ import { Game, subGameScale } from "./game";
 import { Level } from "./level";
 import * as Aseprite from "../aseprite";
 import * as Images from "../images";
+import { ImageInfo } from "../images";
 import { Keys } from "../keys";
 
 Aseprite.loadImage({name: 'title', basePath: 'sprites/'});
@@ -40,7 +41,13 @@ export class SubGame {
         this.context = this.canvas.getContext('2d')!;
         Aseprite.disableSmoothing(this.context);
 
-        this.frameElem = Images.images['frame'].image?.cloneNode() as HTMLImageElement;
+        const frameImage = Images.getFilteredImage('frame', this.hueRotateFilter);
+
+        if (frameImage.image == null) {
+            throw Error('Oh no the frame is null!');
+        }
+
+        this.frameElem = frameImage.image?.cloneNode() as HTMLImageElement;
         if (this.frameElem == null) {
             throw Error('Oh no the frame is null!');
         }

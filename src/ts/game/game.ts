@@ -1,4 +1,5 @@
 import * as Images from "../images";
+import { ImageInfo } from "../images";
 import { Keys } from "../keys";
 import { Sounds } from "../sounds";
 import { Power } from "./constants";
@@ -94,8 +95,6 @@ export class Game {
 
         // Also render each thingo
         for (const subGame of this.subGames) {
-            subGame.frameElem.style.filter = subGame.hueRotateFilter;
-
             subGame.render();
         }
 
@@ -215,8 +214,8 @@ export class Game {
         this.activeSubGame.render();
     }
 
-    static loadAllImages(): Promise<void[]> {
-        const promises: Promise<void>[] = [];
+    static loadAllImages(): Promise<ImageInfo[]> {
+        const promises: Promise<ImageInfo>[] = [];
         for (let i = 0; i <= 11; i++) {
             promises.push(Images.loadImage({name: `level${i}`, extension: 'gif', path: 'levels/'}));
         }
