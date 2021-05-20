@@ -131,11 +131,7 @@ export class Level {
     }
 
     render(context: CanvasRenderingContext2D) {
-        context.save();
-        context.resetTransform();
-        context.fillStyle = '#2ce8f5';
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-        context.restore();
+        this.renderSky(context);
 
         // Just render ALL the tiles for the moment.
         // this.renderFrame(context);
@@ -144,6 +140,20 @@ export class Level {
         for (const entity of this.entities) {
             entity.render(context);
         }
+    }
+
+    renderSky(context:CanvasRenderingContext2D) {
+        const startFilter = context.filter;
+        context.save();
+
+        context.resetTransform();
+        context.filter = this.subGame.hueRotateFilter;
+
+        context.fillStyle = '#2ce8f5';
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+        context.restore();
+        context.filter = startFilter;
     }
 
     renderTiles(context:CanvasRenderingContext2D) {
@@ -188,8 +198,9 @@ export class Level {
     }
 
     renderTile(context: CanvasRenderingContext2D, renderPos: Point, tileGraphicPos: Point) {
+        const image = Images.getFilteredImage('tiles', this.subGame.hueRotateFilter).image!
         context.drawImage(
-            Images.images['tiles'].image!,
+            image,
             tileGraphicPos.x * 16,
             tileGraphicPos.y * 16,
             16,

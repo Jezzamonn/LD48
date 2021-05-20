@@ -26,6 +26,7 @@
 /**
  * @typedef ImageMetadata - Metadata for a spritesheet
  * @type {object}
+ * @property {string} name - Name of this image.
  * @property {boolean} imageLoaded - Whether the image has been loaded.
  * @property {boolean} jsonLoaded - Whether the json metadata has been loaded.
  * @property {boolean} loaded - Whether the image and json have been loaded.
@@ -95,6 +96,7 @@ export function loadImage({name, basePath=null, imagePath=null, jsonPath=null}) 
     }
 
     images[name] = {
+        name,
         imageLoaded: false,
         jsonLoaded: false,
         loaded: false,
@@ -142,6 +144,67 @@ export function loadImage({name, basePath=null, imagePath=null, jsonPath=null}) 
 }
 
 /**
+ * Applies a filter on an image, and caches the result.
+ *
+ * @param {string} name Name of the existing image
+ * @param {string} filter Filter to apply
+ */
+export function applyFilter(name, filter) {
+    const filteredImageName = getFilteredName(name, filter);
+    if (images.hasOwnProperty(filteredImageName)) {
+        return;
+    }
+
+    if (!images.hasOwnProperty(name)) {
+        throw new Error(`Cannot apply filter to image ${name} as it doesn\'t exist.`);
+    }
+
+    const baseImageMetadata = images[name];
+
+    images[filteredImageName] = {
+        name: filteredImageName,
+        imageLoaded: false,
+        jsonLoaded: true,
+        loaded: false,
+        image: null,
+        animations: baseImageMetadata.animations,
+        frames: baseImageMetadata.frames,
+    };
+
+    if (baseImageMetadata.image == null) {
+        throw new Error(`Can't generate filtered image until base image is loaded.`);
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = baseImageMetadata.image.width;
+    canvas.height = baseImageMetadata.image.height;
+
+    const context = canvas.getContext('2d');
+    context.filter = filter;
+
+    context.drawImage(baseImageMetadata.image, 0, 0);
+    const image = new Image();
+    image.src = canvas.toDataURL();
+
+    // Sort of unnecessary to split these as this whole section runs
+    // sequentially, but whatever.
+    images[filteredImageName].image = image;
+    images[filteredImageName].loaded = true;
+    images[filteredImageName].imageLoaded = true;
+
+    return images[filteredImageName];
+}
+
+
+/**
+ * @param {string} name Name of the existing image
+ * @param {string} filter Filter to apply
+ */
+function getFilteredName(name, filter) {
+    return name + ':filter=' + filter;
+}
+
+/**
  * Renders a specific frame to a canvas.
  *
  * @param {!Object} p - Input to this function, as an object.
@@ -159,6 +222,9 @@ export function loadImage({name, basePath=null, imagePath=null, jsonPath=null}) 
  *     for scaling. 0 puts the anchor at the left or the top, 1 puts the anchor
  *     at the right or the bottom. 0.5 positions the anchor at the center.
  *     Defaults to top left.
+ * @param {string} p.flipped Whether to flip the image horizontally.
+ * @param {string} p.filter A CSS filter to apply to the image. This will be
+ *     cached for performance.
  */
 export function drawSprite({
     context,
@@ -171,6 +237,7 @@ export function drawSprite({
         y: 0
     },
     flipped = false,
+    filter = "",
 }) {
     if (typeof image === "string") {
         image = images[image];
@@ -178,6 +245,11 @@ export function drawSprite({
 
     if (!image.loaded) {
         return;
+    }
+
+    if (filter != null && filter.length > 0) {
+        applyFilter(image.name, filter);
+        image = images[getFilteredName(image.name, filter)];
     }
 
     const sourceRect = image.frames[frame].frame;
@@ -240,6 +312,9 @@ export function drawSprite({
  *     for scaling. 0 puts the anchor at the left or the top, 1 puts the anchor
  *     at the right or the bottom. 0.5 positions the anchor at the center.
  *     Defaults to top left.
+ * @param {string} p.flipped Whether to flip the image horizontally.
+ * @param {string} p.filter A CSS filter to apply to the image. This will be
+ *     cached for performance.
  */
 export function drawAnimation({
     context,
@@ -253,6 +328,7 @@ export function drawAnimation({
         y: 0
     },
     flipped = false,
+    filter = "",
 }) {
     if (typeof image === "string") {
         image = images[image];
@@ -272,6 +348,7 @@ export function drawAnimation({
         scale,
         anchorRatios,
         flipped,
+        filter,
     });
 }
 

@@ -77,6 +77,7 @@ export class Boss extends Entity {
             },
             flipped: this.facingDir == FacingDir.RIGHT,
             scale,
+            filter: this.level.subGame.hueRotateFilter,
         });
     }
 

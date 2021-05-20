@@ -50,6 +50,7 @@ export class Bullet extends Entity {
                 y: toRoundedPx(this.y)
             },
             flipped: this.facingDir == FacingDir.LEFT,
+            filter: this.level.subGame.hueRotateFilter,
         });
     }
 

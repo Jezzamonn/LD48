@@ -342,6 +342,7 @@ export class Player extends Entity {
                 y: 1,
             },
             flipped: this.facingDir == FacingDir.LEFT,
+            filter: this.level.subGame.hueRotateFilter,
         });
 
         this.pickup?.render(context);

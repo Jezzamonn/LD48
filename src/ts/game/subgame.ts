@@ -70,7 +70,6 @@ export class SubGame {
 
     render() {
         this.context.resetTransform();
-        this.context.filter = this.hueRotateFilter;
 
         if (this.showingTitle) {
             this.renderTitle(this.context);
@@ -119,7 +118,8 @@ export class SubGame {
             image: 'title',
             animationName: titleName,
             time: 0,
-            position: {x: 0, y: 0}
+            position: {x: 0, y: 0},
+            filter: this.hueRotateFilter,
         });
     }
 }

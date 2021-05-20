@@ -33,11 +33,9 @@ export class Pickup extends Entity {
     }
 
     render(context: CanvasRenderingContext2D) {
-        // super.render(context);
-        const startFilter = context.filter;
-
+        let filter = '';
         if (this.subGameIndex) {
-            context.filter = `hue-rotate(${60 * this.subGameIndex}deg)`;
+            filter = `hue-rotate(${60 * this.subGameIndex}deg)`;
         }
 
         Aseprite.drawSprite({
@@ -46,10 +44,9 @@ export class Pickup extends Entity {
             frame: 0,
             position: {
                 x: toRoundedPx(this.x),
-                y: toRoundedPx(this.y)
+                y: toRoundedPx(this.y),
             },
+            filter,
         });
-
-        context.filter = startFilter;
     }
 }
