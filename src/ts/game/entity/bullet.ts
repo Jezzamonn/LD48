@@ -32,8 +32,7 @@ export class Bullet extends Entity {
 
             if (this.isTouchingEntity(ent)) {
                 ent.takeDamage();
-                this.removeFromLevel();
-                // TODO: Play SFX
+                this.done = true;
             }
         }
     }
@@ -56,15 +55,15 @@ export class Bullet extends Entity {
 
     // TODO: Would be nice to have a particle here.
     onUpCollision() {
-        this.removeFromLevel();
+        this.done = true;
     }
     onDownCollision() {
-        this.removeFromLevel();
+        this.done = true;
     }
     onLeftCollision() {
-        this.removeFromLevel();
+        this.done = true;
     }
     onRightCollision() {
-        this.removeFromLevel();
+        this.done = true;
     }
 }

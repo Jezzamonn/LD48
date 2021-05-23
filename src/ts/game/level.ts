@@ -26,6 +26,7 @@ export class Level {
     subGame: SubGame;
     player!: Player;
     entities: Entity[] = [];
+    toRemoveEntities = new Set<Entity>();
     tiles: Tile[][] = [];
 
     constructor(subGame: SubGame, levelImage: HTMLImageElement) {
@@ -118,16 +119,21 @@ export class Level {
         for (const entity of this.entities) {
             entity.update(dt);
         }
+
+        // Then do another loop and remove all entities that need to be removed
+        for (let i = this.entities.length-1; i >= 0; i--) {
+            const entity = this.entities[i];
+            if (entity.done || this.toRemoveEntities.has(entity)) {
+                this.entities.splice(i, 1);
+            }
+        }
+        this.toRemoveEntities.clear();
     }
 
     // TODO: This should probably save to a separate list instead of directly removing.
     remove(entity: Entity) {
-        const index = this.entities.indexOf(entity);
-        if (index < 0) {
-            console.error(`I cannae remove entity ${entity}`);
-            return;
-        }
-        this.entities.splice(index, 1);
+        // Mark as to be removed, and remove it next frame.
+        this.toRemoveEntities.add(entity);
     }
 
     render(context: CanvasRenderingContext2D) {

@@ -28,9 +28,11 @@ export class Entity {
 
     debugColor?: string = '#f0f';
 
-    isEnemy: boolean = false;
+    isEnemy = false;
     health = 1
     lifeTime?: number;
+
+    done = false;
 
     constructor(level: Level) {
         this.level = level;
@@ -41,12 +43,16 @@ export class Entity {
     }
 
     update(dt: number) {
+        if (this.done) {
+            return;
+        }
+
         this.animCount += dt;
 
         if (this.lifeTime != null) {
             this.lifeTime -= dt;
             if (this.lifeTime < 0) {
-                this.removeFromLevel();
+                this.done = true;
                 return;
             }
         }

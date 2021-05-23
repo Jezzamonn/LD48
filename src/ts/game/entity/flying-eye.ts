@@ -69,7 +69,7 @@ export class FlyingEye extends Entity {
         this.hurtCount = this.hurtCountLength;
 
         if (this.health == 0) {
-            this.removeFromLevel();
+            this.done = true;
         }
     }
 }
