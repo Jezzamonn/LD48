@@ -71,7 +71,6 @@ export class Level {
                     this.tiles[y][x] = Tile.GROUND;
                 }
                 else if (colorString == 'ff00ff') {
-                    console.log('add player')
                     this.player = this.addEntity(Player, {x, y});
                 }
                 else if (colorString.startsWith('00ff')) {
