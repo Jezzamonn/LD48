@@ -28,6 +28,8 @@ export class Pickup extends Entity {
                 return Power.SHOOT;
             case 8:
                 return Power.BIG_JUMP;
+            case 11:
+                return Power.DANCE;
         }
         return undefined;
     }

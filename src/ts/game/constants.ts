@@ -20,6 +20,7 @@ export enum Power {
     DASH, // Unsupported at the mo
     SHOOT,
     BIG_JUMP,
+    DANCE,
 }
 
 export function toPx(val: number): number {

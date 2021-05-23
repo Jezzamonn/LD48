@@ -89,16 +89,20 @@ export class SubGame {
     }
 
     renderPower(context: CanvasRenderingContext2D) {
-        const powerNameMap: {[key: string]: string} = {};
-        powerNameMap[Power.DOUBLE_JUMP] = 'double jump';
-        powerNameMap[Power.SHOOT] = 'shoot';
-        powerNameMap[Power.BIG_JUMP] = 'big jump';
+        const powerAnimations: {[key: string]: string} = {};
+        powerAnimations[Power.DOUBLE_JUMP] = 'double jump';
+        powerAnimations[Power.SHOOT] = 'shoot';
+        powerAnimations[Power.BIG_JUMP] = 'big jump';
 
         for (const power of this.game.currentPowers) {
+            const powerAnimation = powerAnimations[power];
+            if (powerAnimation == null) {
+                continue;
+            }
             Aseprite.drawAnimation({
                 context,
                 image: 'power_label',
-                animationName: powerNameMap[power],
+                animationName: powerAnimation,
                 time: 0,
                 position: {x: PX_SCREEN_WIDTH, y: 0},
                 anchorRatios: {x: 1, y: 0},

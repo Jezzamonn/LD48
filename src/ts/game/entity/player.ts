@@ -1,7 +1,7 @@
 import { IKeys, Keys, NullKeys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
-import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT } from "../constants";
+import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT, toPx } from "../constants";
 import { Pickup } from "./pickup";
 import { clampedSplitInternal, splitInternal } from "../../util";
 import * as Aseprite from "../../aseprite";
@@ -73,7 +73,7 @@ export class Player extends Entity {
     get pickupX() {
         let pxDist = 6;
         if (this.shootCooldown > 0.7 * this.shootCooldownTime) {
-            pxDist = 5;
+            pxDist--;
         }
         return this.midX + this.facingDirMult * fromPx(pxDist);
     }
@@ -176,12 +176,6 @@ export class Player extends Entity {
             }
         }
 
-        if (this.pickup != null) {
-            this.pickup.midX = this.pickupX;
-            this.pickup.midY = this.pickupY;
-        }
-
-
         if (this.midAir) {
             // To emphasize the head bump, don't apply gravity for a bit
             if (this.headBumpCount < 0.5 * headBumpTime) {
@@ -203,6 +197,12 @@ export class Player extends Entity {
         }
 
         this.lastX = this.x;
+
+        // Update the pickup before moving so it drags a bit
+        if (this.pickup != null) {
+            this.pickup.midX = this.pickupX;
+            this.pickup.midY = this.pickupY;
+        }
 
         this.moveX(dt);
         this.moveY(dt);
@@ -322,10 +322,11 @@ export class Player extends Entity {
             const animLength = (Aseprite.images['character'].animations!)['land'].length / 1000;
             this.animCount = animPosition * animLength;
         }
-        else {
-            if (this.lastX != this.x) {
-                animName = 'run';
-            }
+        else if (this.lastX != this.x) {
+            animName = 'run';
+        }
+        else if (this.level.subGame.game.currentPowers.has(Power.DANCE)) {
+            animName = 'dance';
         }
 
         Aseprite.drawAnimation({
@@ -345,7 +346,32 @@ export class Player extends Entity {
             filter: this.level.subGame.hueRotateFilter,
         });
 
+        // Kind of dodgy, but move the gameboy slightly depending on the dancing animation
+        const holdOffset = {x: 0, y: 0};
+        const animLength = (Aseprite.images['character'].animations!)[animName].length / 1000;
+        const positionInAnimation = (this.animCount / animLength) % 1;
+        switch (animName) {
+            case 'dance':
+                // If the hands are facing backwards in the dance
+                if (positionInAnimation < 0.5) {
+                    holdOffset.x = -1 * this.facingDirMult;
+                }
+                holdOffset.y = -1;
+                break;
+            case 'run':
+                // The jumping frame of the animation
+                if (positionInAnimation >= 0.5) {
+                    holdOffset.y = -1;
+                }
+            case 'wall-bump':
+                holdOffset.y -= 1;
+                break;
+        }
+
+        context.save();
+        context.translate(holdOffset.x, holdOffset.y);
         this.pickup?.render(context);
+        context.restore();
     }
 
     onDownCollision() {
