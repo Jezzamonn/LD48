@@ -225,12 +225,12 @@ export class Player extends Entity {
             this.dy = -jumpSpeed;
         }
 
-        this.spawnJumpCloud();
+        this.spawnGroundAnim('jump_cloud');
         Sounds.playSound('jump');
     }
 
-    spawnJumpCloud() {
-        const jumpCloud = new Particle(this.level, 'jump_cloud', 'anim', {x: 0.5, y: 1});
+    spawnGroundAnim(name: string) {
+        const jumpCloud = new Particle(this.level, name, 'anim', {x: 0.5, y: 1});
         jumpCloud.facingDir = this.facingDir;
         jumpCloud.midX = this.midX;
         jumpCloud.maxY = this.maxY;
@@ -400,6 +400,7 @@ export class Player extends Entity {
             this.deathAnim = rng() < 0.1 ? 'place-grave' : 'die';
         }
 
+        this.spawnGroundAnim('land_flash');
         Sounds.playSound('land');
     }
 

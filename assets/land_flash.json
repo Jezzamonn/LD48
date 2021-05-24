@@ -1,0 +1,32 @@
+{ "frames": [
+   {
+    "filename": "land_flash 0.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 32, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 16 },
+    "sourceSize": { "w": 32, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "land_flash 1.aseprite",
+    "frame": { "x": 1, "y": 17, "w": 32, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 16 },
+    "sourceSize": { "w": 32, "h": 16 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "land_flash.png",
+  "format": "RGBA8888",
+  "size": { "w": 34, "h": 66 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "anim", "from": 0, "to": 1, "direction": "forward" }
+  ]
+ }
+}
