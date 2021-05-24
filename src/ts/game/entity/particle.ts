@@ -10,6 +10,7 @@ export class Particle extends Entity {
     renderPos: Point;
     lifeTimeMult: number;
     dampAmt: number = 1;
+    flippedY = false;
 
     constructor(
         level: Level,
@@ -19,12 +20,14 @@ export class Particle extends Entity {
             renderPos=undefined,
             lifeTimeMult=1,
             lifeTime=undefined,
+            flippedY=false,
         }: {
             imageName: string,
             animationName?: string,
             renderPos?: Point,
             lifeTimeMult?: number,
             lifeTime?: number,
+            flippedY?: boolean,
         }
     ) {
         super(level);
@@ -39,8 +42,9 @@ export class Particle extends Entity {
             this.lifeTimeMult = Number.POSITIVE_INFINITY;
         }
         else {
-            this.lifeTimeMult = lifeTimeMult ?? 1
+            this.lifeTimeMult = lifeTimeMult;
         }
+        this.flippedY = flippedY;
 
         Aseprite.loadImage({name: imageName, basePath: 'sprites/'});
     }
@@ -76,7 +80,8 @@ export class Particle extends Entity {
                     x: toRoundedPx(this.x),
                     y: toRoundedPx(this.y),
                 },
-                flipped: this.facingDir == FacingDir.LEFT,
+                flippedX: this.facingDir == FacingDir.LEFT,
+                flippedY: this.flippedY,
                 anchorRatios: this.renderPos,
 
                 frame: 0,
@@ -90,7 +95,8 @@ export class Particle extends Entity {
                     x: toRoundedPx(this.x),
                     y: toRoundedPx(this.y),
                 },
-                flipped: this.facingDir == FacingDir.LEFT,
+                flippedX: this.facingDir == FacingDir.LEFT,
+                flippedY: this.flippedY,
                 anchorRatios: this.renderPos,
 
                 animationName: this.animationName,

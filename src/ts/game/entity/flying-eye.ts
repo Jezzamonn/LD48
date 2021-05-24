@@ -57,7 +57,7 @@ export class FlyingEye extends Entity {
                 x: toRoundedPx(this.x + jitterAmt * xJitter),
                 y: toRoundedPx(this.y + jitterAmt * yJitter),
             },
-            flipped: this.facingDir == FacingDir.RIGHT,
+            flippedX: this.facingDir == FacingDir.RIGHT,
             filter: this.level.subGame.hueRotateFilter,
         });
     }

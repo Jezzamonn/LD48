@@ -236,7 +236,8 @@ export function drawSprite({
         x: 0,
         y: 0
     },
-    flipped = false,
+    flippedX = false,
+    flippedY = false,
     filter = "",
 }) {
     if (typeof image === "string") {
@@ -261,31 +262,31 @@ export function drawSprite({
         Math.round(position.x),
         Math.round(position.y)
     );
-    if (!flipped) {
-        context.drawImage(
-            image.image,
-            sourceRect.x,
-            sourceRect.y,
-            sourceRect.w,
-            sourceRect.h,
-            -anchorRatios.x * destW,
-            -anchorRatios.y * destH,
-            destW,
-            destH);
+
+    const adjustedAnchorRatios = {
+        x: anchorRatios.x,
+        y: anchorRatios.y,
     }
-    else {
+
+    if (flippedX) {
         context.scale(-1, 1);
-        context.drawImage(
-            image.image,
-            sourceRect.x,
-            sourceRect.y,
-            sourceRect.w,
-            sourceRect.h,
-            -(1 - anchorRatios.x) * destW,
-            -anchorRatios.y * destH,
-            destW,
-            destH);
+        adjustedAnchorRatios.x = 1 - adjustedAnchorRatios.x;
     }
+    if (flippedY) {
+        context.scale(1, -1);
+        adjustedAnchorRatios.y = 1 - adjustedAnchorRatios.y;
+    }
+
+    context.drawImage(
+        image.image,
+        sourceRect.x,
+        sourceRect.y,
+        sourceRect.w,
+        sourceRect.h,
+        -adjustedAnchorRatios.x * destW,
+        -adjustedAnchorRatios.y * destH,
+        destW,
+        destH);
 
     context.restore();
 }
@@ -327,7 +328,8 @@ export function drawAnimation({
         x: 0,
         y: 0
     },
-    flipped = false,
+    flippedX = false,
+    flippedY = false,
     filter = "",
 }) {
     if (typeof image === "string") {
@@ -347,7 +349,8 @@ export function drawAnimation({
         position,
         scale,
         anchorRatios,
-        flipped,
+        flippedX,
+        flippedY,
         filter,
     });
 }

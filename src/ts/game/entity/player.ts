@@ -225,13 +225,8 @@ export class Player extends Entity {
             this.dy = -jumpSpeed;
         }
 
-        this.spawnGroundAnim('jump_cloud');
-        Sounds.playSound('jump');
-    }
-
-    spawnGroundAnim(name: string) {
         const particle = new Particle(this.level, {
-            imageName: name,
+            imageName: 'jump_cloud',
             animationName: 'anim',
             renderPos: {x: 0.5, y: 1},
         });
@@ -239,6 +234,8 @@ export class Player extends Entity {
         particle.midX = this.midX;
         particle.maxY = this.maxY;
         this.level.entities.push(particle);
+
+        Sounds.playSound('jump');
     }
 
     fire() {
@@ -360,7 +357,7 @@ export class Player extends Entity {
                 x: 0.5,
                 y: 1,
             },
-            flipped: this.facingDir == FacingDir.LEFT,
+            flippedX: this.facingDir == FacingDir.LEFT,
             filter: this.level.subGame.hueRotateFilter,
         });
 
@@ -404,12 +401,32 @@ export class Player extends Entity {
             this.deathAnim = rng() < 0.1 ? 'place-grave' : 'die';
         }
 
-        this.spawnGroundAnim('land_flash');
+        const particle = new Particle(this.level, {
+            imageName: 'land_flash',
+            animationName: 'anim',
+            renderPos: {x: 0.5, y: 1},
+        });
+        particle.facingDir = this.facingDir;
+        particle.midX = this.midX;
+        particle.maxY = this.maxY;
+        this.level.entities.push(particle);
+
         Sounds.playSound('land');
     }
 
     onUpCollision() {
         super.onUpCollision();
+
+        const particle = new Particle(this.level, {
+            imageName: 'land_flash',
+            animationName: 'anim',
+            renderPos: {x: 0.5, y: 0},
+            flippedY: true,
+        });
+        particle.facingDir = this.facingDir;
+        particle.midX = this.midX;
+        particle.minY = this.minY;
+        this.level.entities.push(particle);
 
         this.headBumpCount = headBumpTime;
         Sounds.playSound('land', {volume: 0.3});

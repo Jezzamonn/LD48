@@ -75,7 +75,7 @@ export class Boss extends Entity {
                 x: toRoundedPx(this.x),
                 y: toRoundedPx(this.y)
             },
-            flipped: this.facingDir == FacingDir.RIGHT,
+            flippedX: this.facingDir == FacingDir.RIGHT,
             scale,
             filter: this.level.subGame.hueRotateFilter,
         });
