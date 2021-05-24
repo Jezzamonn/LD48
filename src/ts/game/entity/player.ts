@@ -3,7 +3,7 @@ import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
 import { fromPx, rng, toRoundedPx, Power, Point, PX_SCREEN_HEIGHT, toPx } from "../constants";
 import { Pickup } from "./pickup";
-import { clampedSplitInternal, splitInternal } from "../../util";
+import { clampedSplitInternal, slurp, splitInternal } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";
 import { Sounds } from "../../sounds";
@@ -138,11 +138,11 @@ export class Player extends Entity {
         // TODO: Smoothen this.
         if (this.isDead) {
             if (!this.midAir) {
-                this.dampen(dt);
+                this.dampenX(dt);
             }
         }
         else {
-            this.dampen(dt);
+            this.dampenX(dt);
             if (!this.crouching) {
                 if (this.keys.isPressed('ArrowLeft')) {
                     if (this.facingDir != FacingDir.LEFT) {
@@ -230,11 +230,15 @@ export class Player extends Entity {
     }
 
     spawnGroundAnim(name: string) {
-        const jumpCloud = new Particle(this.level, name, 'anim', {x: 0.5, y: 1});
-        jumpCloud.facingDir = this.facingDir;
-        jumpCloud.midX = this.midX;
-        jumpCloud.maxY = this.maxY;
-        this.level.entities.push(jumpCloud);
+        const particle = new Particle(this.level, {
+            imageName: name,
+            animationName: 'anim',
+            renderPos: {x: 0.5, y: 1},
+        });
+        particle.facingDir = this.facingDir;
+        particle.midX = this.midX;
+        particle.maxY = this.maxY;
+        this.level.entities.push(particle);
     }
 
     fire() {
@@ -427,6 +431,20 @@ export class Player extends Entity {
         if (this.canWallBump) {
             this.wallBumpCount = wallBumpTime;
             this.canWallBump = false;
+
+            const particle = new Particle(this.level, {
+                imageName: 'star_particle',
+                renderPos: {x: 0.5, y: 0.5},
+                lifeTime: 0.5,
+            });
+            particle.facingDir = this.facingDir;
+            particle.midX = this.midX - this.facingDirMult * fromPx(4);
+            particle.maxY = this.maxY - fromPx(4);
+            particle.dy = Math.round(slurp(-400, 400, rng()));
+            particle.dx = this.facingDirMult * -500;
+            particle.dampAmt = 0.85;
+            this.level.entities.push(particle);
+
             Sounds.playSound('land', {volume: 0.3});
         }
     }

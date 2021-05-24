@@ -58,7 +58,7 @@ export class Entity {
         }
 
         this.applyGravity(dt);
-        this.dampen(dt);
+        this.dampenX(dt);
 
         this.moveX(dt);
         this.moveY(dt);
@@ -73,7 +73,7 @@ export class Entity {
         this.dy += this.gravity * dt;
     }
 
-    dampen(dt: number) {
+    dampenX(dt: number) {
         const dampAmt = this.dxDampen * dt;
         if (this.dx > dampAmt) {
             this.dx -= dampAmt;
