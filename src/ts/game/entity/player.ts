@@ -226,9 +226,9 @@ export class Player extends Entity {
         }
 
         const particle = new Particle(this.level, {
-            imageName: 'jump_cloud',
+            imageName: this.midAir ? 'double_jump_circle' : 'jump_cloud',
             animationName: 'anim',
-            renderPos: {x: 0.5, y: 1},
+            renderPos: this.midAir ? {x: 0.5, y: 0.5} : {x: 0.5, y: 1},
         });
         particle.facingDir = this.facingDir;
         particle.midX = this.midX;
