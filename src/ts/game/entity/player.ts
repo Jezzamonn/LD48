@@ -39,6 +39,7 @@ export class Player extends Entity {
     shootCooldown = 0;
     isDead = false;
 
+    lastRunAnimationPosition = 0;
     landCount = 0;
     wallBumpCount = 0;
     canWallBump = true;
@@ -209,15 +210,7 @@ export class Player extends Entity {
         this.moveY(dt);
 
         if (!this.midAir && this.dx != 0) {
-            const runCloudParticle = new Particle(this.level, {
-                imageName: 'small_particle',
-                animationName: 'anim',
-            });
-            runCloudParticle.midX = this.midX + this.facingDirMult * fromPx(-4);
-            runCloudParticle.maxY = this.maxY - fromPx(2);
-            runCloudParticle.dx = 300;
-            runCloudParticle.dampAmt = 0.9;
-            this.level.entities.push(runCloudParticle);
+            this.considerSpawningRunParticle();
         }
 
         if (this.lastX != this.x && this.wallBumpCount < 0.9 * wallBumpTime) {
@@ -228,6 +221,26 @@ export class Player extends Entity {
             this.pickup.midX = this.pickupX;
             this.pickup.midY = this.pickupY;
         }
+    }
+
+    considerSpawningRunParticle() {
+        const animLength = (Aseprite.images['character'].animations!)['run'].length / 1000;
+        const positionInAnimation = (this.animCount / animLength) % 1;
+
+        if (positionInAnimation >= 0.5 && this.lastRunAnimationPosition < 0.5) {
+            const runCloudParticle = new Particle(this.level, {
+                imageName: 'small_particle',
+                animationName: 'anim',
+            });
+            runCloudParticle.facingDir = this.facingDir;
+            runCloudParticle.midX = this.midX - 0.7 * this.facingDirMult * this.w;
+            runCloudParticle.maxY = this.maxY - fromPx(2);
+            runCloudParticle.dx = this.facingDirMult * -300;
+            runCloudParticle.dampAmt = 0.9;
+            this.level.entities.push(runCloudParticle);
+        }
+
+        this.lastRunAnimationPosition = positionInAnimation;
     }
 
     jump() {
