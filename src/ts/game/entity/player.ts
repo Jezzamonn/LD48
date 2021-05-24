@@ -7,6 +7,7 @@ import { clampedSplitInternal, splitInternal } from "../../util";
 import * as Aseprite from "../../aseprite";
 import { Bullet } from "./bullet";
 import { Sounds } from "../../sounds";
+import { Particle } from "./particle";
 
 const jumpSpeed = 1550;
 const bigJumpSpeed = 2500;
@@ -224,7 +225,16 @@ export class Player extends Entity {
             this.dy = -jumpSpeed;
         }
 
+        this.spawnJumpCloud();
         Sounds.playSound('jump');
+    }
+
+    spawnJumpCloud() {
+        const jumpCloud = new Particle(this.level, 'jump_cloud', 'anim', {x: 0.5, y: 1});
+        jumpCloud.facingDir = this.facingDir;
+        jumpCloud.midX = this.midX;
+        jumpCloud.maxY = this.maxY;
+        this.level.entities.push(jumpCloud);
     }
 
     fire() {

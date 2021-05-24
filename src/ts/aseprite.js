@@ -84,7 +84,7 @@ export function loadImage({name, basePath=null, imagePath=null, jsonPath=null}) 
     }
 
     if (images.hasOwnProperty(name)) {
-        console.log(`Already loaded image ${name}.`);
+        return;
     }
 
     if (!imagePath || !jsonPath) {
