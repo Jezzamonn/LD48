@@ -418,14 +418,16 @@ export class Player extends Entity {
         super.onUpCollision();
 
         const particle = new Particle(this.level, {
-            imageName: 'land_flash',
-            animationName: 'anim',
-            renderPos: {x: 0.5, y: 0},
-            flippedY: true,
+            imageName: 'star_particle',
+            renderPos: {x: 0.5, y: 0.5},
+            lifeTime: 0.5,
         });
         particle.facingDir = this.facingDir;
-        particle.midX = this.midX;
-        particle.minY = this.minY;
+        particle.midX = this.midX + this.facingDirMult * (-1.2 * this.w);
+        particle.minY = this.minY + fromPx(4);
+        particle.dy = 500;
+        particle.dx = this.facingDirMult * -400;
+        particle.dampAmt = 0.85;
         this.level.entities.push(particle);
 
         this.headBumpCount = headBumpTime;
