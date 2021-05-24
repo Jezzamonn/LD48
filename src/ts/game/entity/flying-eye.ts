@@ -3,6 +3,7 @@ import { fromPx, rng, toRoundedPx } from "../constants";
 import { Level } from "../level";
 import * as Aseprite from "../../aseprite";
 import { Sounds } from "../../sounds";
+import { Particle } from "./particle";
 
 Aseprite.loadImage({name: 'flying_eye', basePath: 'sprites/'});
 
@@ -63,6 +64,10 @@ export class FlyingEye extends Entity {
     }
 
     takeDamage() {
+        if (this.done) {
+            return;
+        }
+
         this.health--;
         Sounds.playSound('hit');
 
@@ -70,6 +75,15 @@ export class FlyingEye extends Entity {
 
         if (this.health == 0) {
             this.done = true;
+
+            const particle = new Particle(this.level, {
+                imageName: 'explode',
+                animationName: 'anim',
+                renderPos: {x: 0.5, y: 0.5},
+            });
+            particle.midX = this.midX + fromPx(1);
+            particle.midY = this.midY + fromPx(1);
+            this.level.entities.push(particle);
         }
     }
 }

@@ -1,0 +1,59 @@
+{ "frames": [
+   {
+    "filename": "explode 0.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 150
+   },
+   {
+    "filename": "explode 1.aseprite",
+    "frame": { "x": 1, "y": 25, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "explode 2.aseprite",
+    "frame": { "x": 25, "y": 1, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "explode 3.aseprite",
+    "frame": { "x": 25, "y": 25, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 50
+   },
+   {
+    "filename": "explode 4.aseprite",
+    "frame": { "x": 49, "y": 1, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "explode.png",
+  "format": "RGBA8888",
+  "size": { "w": 74, "h": 66 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "anim", "from": 0, "to": 4, "direction": "forward" }
+  ]
+ }
+}
