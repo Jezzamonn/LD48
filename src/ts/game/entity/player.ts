@@ -1,7 +1,7 @@
 import { IKeys, Keys, NullKeys } from "../../keys";
 import { Level } from "../level";
 import { Entity, FacingDir } from "./entity";
-import { fromPx, rng, toRoundedPx, Power, Point, SCREEN_HEIGHT, toPx } from "../constants";
+import { fromPx, rng, toRoundedPx, Power, Point, PX_SCREEN_HEIGHT, toPx } from "../constants";
 import { Pickup } from "./pickup";
 import { clampedSplitInternal, splitInternal } from "../../util";
 import * as Aseprite from "../../aseprite";
@@ -57,21 +57,26 @@ export class Player extends Entity {
     }
 
     get cameraPos(): Point {
-        const x = this.level.player.midX + this.level.player.facingDirMult * fromPx(20);
-        let y = this.level.player.midY - Math.round(0.12 * SCREEN_HEIGHT);
+        let x = toRoundedPx(this.midX);
+        let y = toRoundedPx(this.maxY);
+
+        y -= toRoundedPx(this.h / 2);
+
+        x += this.level.player.facingDirMult * 20;
+        y -= Math.round(0.12 * PX_SCREEN_HEIGHT);
 
         if (this.crouching) {
-            y += Math.round(0.3 * SCREEN_HEIGHT);
+            y += Math.round(0.3 * PX_SCREEN_HEIGHT);
         }
         if (this.midAir) {
             const jumpAmt = splitInternal(this.dy, -jumpSpeed, jumpSpeed);
-            y += (jumpAmt + 0.1) * Math.round(0.5 * SCREEN_HEIGHT);
+            y += (jumpAmt + 0.1) * Math.round(0.5 * PX_SCREEN_HEIGHT);
         }
         return {x, y};
     }
 
     get pickupX() {
-        let pxDist = 6;
+        let pxDist = 6.5;
         if (this.shootCooldown > 0.7 * this.shootCooldownTime) {
             pxDist--;
         }
@@ -198,17 +203,16 @@ export class Player extends Entity {
 
         this.lastX = this.x;
 
-        // Update the pickup before moving so it drags a bit
-        if (this.pickup != null) {
-            this.pickup.midX = this.pickupX;
-            this.pickup.midY = this.pickupY;
-        }
-
         this.moveX(dt);
         this.moveY(dt);
 
         if (this.lastX != this.x && this.wallBumpCount < 0.9 * wallBumpTime) {
             this.canWallBump = true;
+        }
+
+        if (this.pickup != null) {
+            this.pickup.midX = this.pickupX;
+            this.pickup.midY = this.pickupY;
         }
     }
 
@@ -363,6 +367,7 @@ export class Player extends Entity {
                 if (positionInAnimation >= 0.5) {
                     holdOffset.y = -1;
                 }
+                break;
             case 'wall-bump':
                 holdOffset.y -= 1;
                 break;

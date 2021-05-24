@@ -28,7 +28,7 @@ export class SubGame {
 
         this.makeElements();
 
-        this.camera.getTargetPosition = () => this.level.player.cameraPos;
+        this.camera.getTargetPxPosition = () => this.level.player.cameraPos;
     }
 
     makeElements() {

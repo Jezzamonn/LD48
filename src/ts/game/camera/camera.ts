@@ -5,38 +5,38 @@ const updateSmoothness = 0.05;
 
 export class Camera {
 
-    getTargetPosition = () => ({x: 0, y: 0});
+    getTargetPxPosition = () => ({x: 0, y: 0});
 
-    curPos: Point = {x: 0, y: 0};
+    curPxPos: Point = {x: 0, y: 0};
 
     constructor() {
     }
 
     update(dt: number) {
-        const targetPos = this.getTargetPosition();
-        this.curPos.x = lerp(this.curPos.x, targetPos.x, updateSmoothness);
-        this.curPos.y = lerp(this.curPos.y, targetPos.y, updateSmoothness);
+        const targetPxPos = this.getTargetPxPosition();
+       this.curPxPos.x = lerp(this.curPxPos.x, targetPxPos.x, updateSmoothness);
+       this.curPxPos.y = lerp(this.curPxPos.y, targetPxPos.y, updateSmoothness);
     }
 
     applyToContext(context: CanvasRenderingContext2D) {
         context.translate(PX_SCREEN_WIDTH / 2, PX_SCREEN_HEIGHT / 2);
-        context.translate(toRoundedPx(-this.curPos.x), toRoundedPx(-this.curPos.y));
+        context.translate(Math.round(-this.curPxPos.x), Math.round(-this.curPxPos.y));
     }
 
     // In in-game dimensions
     get minVisibleX() {
-        return this.curPos.x - SCREEN_WIDTH / 2;
+        return fromPx(this.curPxPos.x - PX_SCREEN_WIDTH / 2);
     }
 
     get minVisibleY() {
-        return this.curPos.y - SCREEN_HEIGHT / 2;
+        return fromPx(this.curPxPos.y - PX_SCREEN_HEIGHT / 2);
     }
 
     get maxVisibleX() {
-        return this.curPos.x + SCREEN_WIDTH / 2;
+        return fromPx(this.curPxPos.x + PX_SCREEN_WIDTH / 2);
     }
 
     get maxVisibleY() {
-        return this.curPos.y + SCREEN_HEIGHT / 2;
+        return fromPx(this.curPxPos.y + PX_SCREEN_HEIGHT / 2);
     }
 }
