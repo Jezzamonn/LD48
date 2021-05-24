@@ -1,0 +1,50 @@
+{ "frames": [
+   {
+    "filename": "small_particle 0.aseprite",
+    "frame": { "x": 1, "y": 1, "w": 8, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 8, "h": 8 },
+    "sourceSize": { "w": 8, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "small_particle 1.aseprite",
+    "frame": { "x": 1, "y": 9, "w": 8, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 8, "h": 8 },
+    "sourceSize": { "w": 8, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "small_particle 2.aseprite",
+    "frame": { "x": 1, "y": 17, "w": 8, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 8, "h": 8 },
+    "sourceSize": { "w": 8, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "small_particle 3.aseprite",
+    "frame": { "x": 1, "y": 25, "w": 8, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 8, "h": 8 },
+    "sourceSize": { "w": 8, "h": 8 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.27",
+  "image": "small_particle.png",
+  "format": "RGBA8888",
+  "size": { "w": 10, "h": 66 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "anim", "from": 0, "to": 3, "direction": "forward" }
+  ]
+ }
+}

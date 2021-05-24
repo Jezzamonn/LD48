@@ -37,11 +37,12 @@ export class Player extends Entity {
     crouching = false;
     shootCooldownTime = 0.15;
     shootCooldown = 0;
+    isDead = false;
+
     landCount = 0;
     wallBumpCount = 0;
     canWallBump = true;
     headBumpCount = 0;
-    isDead = false;
     deathAnim = 'die';
 
     lastX = 0;
@@ -206,6 +207,18 @@ export class Player extends Entity {
 
         this.moveX(dt);
         this.moveY(dt);
+
+        if (!this.midAir && this.dx != 0) {
+            const runCloudParticle = new Particle(this.level, {
+                imageName: 'small_particle',
+                animationName: 'anim',
+            });
+            runCloudParticle.midX = this.midX + this.facingDirMult * fromPx(-4);
+            runCloudParticle.maxY = this.maxY - fromPx(2);
+            runCloudParticle.dx = 300;
+            runCloudParticle.dampAmt = 0.9;
+            this.level.entities.push(runCloudParticle);
+        }
 
         if (this.lastX != this.x && this.wallBumpCount < 0.9 * wallBumpTime) {
             this.canWallBump = true;
